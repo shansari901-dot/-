@@ -389,9 +389,14 @@ function toast(msg) {
   const t = $('#toast'); t.textContent = msg; t.classList.add('show');
   clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('show'), 2300);
 }
+
+/* --- FIXED SHOW FUNCTION --- */
 function show(sel) {
-  ['#authScreen', '#appScreen', '#adminScreen'].forEach(s => $(s).classList.add('hide'));
-  if (sel !== '#authScreen') $(sel).classList.remove('hide');
+  const screens = ['#authScreen', '#appScreen', '#adminScreen'];
+  screens.forEach(s => {
+    if (s === sel) $(s).classList.remove('hide');
+    else $(s).classList.add('hide');
+  });
   window.scrollTo(0, 0);
 }
 
@@ -1509,4 +1514,4 @@ function botReply(qRaw) {
 })();
 </script>
 </body>
-  </html>
+</html>
