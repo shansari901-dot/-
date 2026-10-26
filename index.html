@@ -3,227 +3,360 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover"/>
-<meta name="theme-color" content="#4f46e5"/>
-<title>दुकानदार — उधारी व हिसाब</title>
+<meta name="theme-color" content="#0e2f50"/>
+<title>खाता साथी — दुकान का हिसाब</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;min-height:100%}
-body{font-family:'Segoe UI',system-ui,-apple-system,'Noto Sans Devanagari',sans-serif;background:#f1f4fb;color:#0f172a;-webkit-font-smoothing:antialiased}
-:root{--bg:#f1f4fb;--card:#fff;--ink:#0f172a;--muted:#6b7a90;--line:#e8ecf5;--primary:#4f46e5;--p2:#7c3aed;--green:#0e9f6e;--red:#e02424;--amber:#d97706;--r:18px;--sh:0 8px 24px rgba(15,23,42,.07)}
+body{font-family:'Segoe UI',Inter,system-ui,-apple-system,'Noto Sans Devanagari',sans-serif;background:#e9eef4;color:#12283d;font-size:13.5px;-webkit-font-smoothing:antialiased}
+:root{
+  --navy:#0e2f50;--navy2:#17466f;--steel:#3d6b96;
+  --line:#c8d4e1;--line2:#e2e9f0;--bg:#e9eef4;--panel:#fff;
+  --ink:#12283d;--muted:#64798f;--gold:#d9a419;
+  --green:#0d7a4f;--red:#c02a2a;--blue:#1a5f9e;
+}
 .hide{display:none!important}
-.screen{display:none;min-height:100vh}
-.screen.active{display:block}
 h1,h2,h3,h4,p{margin:0}
-/* ---------- AUTH ---------- */
-.authwrap{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:26px 16px 44px;
-background:radial-gradient(1100px 480px at 8% -12%,#c7d2fe 0%,transparent 62%),radial-gradient(900px 480px at 102% -4%,#ddd6fe 0%,transparent 58%),linear-gradient(160deg,#f8fafc,#eef2ff)}
-.brand{text-align:center;margin-bottom:20px}
-.logo{width:66px;height:66px;margin:0 auto 12px;border-radius:20px;display:grid;place-items:center;font-size:28px;font-weight:800;color:#fff;background:linear-gradient(135deg,var(--primary),var(--p2));box-shadow:0 14px 30px rgba(79,70,229,.36)}
-.brand h1{font-size:26px;letter-spacing:.4px}
-.brand p{margin-top:6px;color:var(--muted);font-size:14px}
-.card{background:var(--card);border-radius:var(--r);box-shadow:var(--sh);border:1px solid var(--line)}
-.authcard{padding:18px;max-width:440px;width:100%;margin:0 auto}
-.tabs{display:flex;gap:6px;background:#f1f4fb;padding:5px;border-radius:14px;margin-bottom:16px}
-.tab{flex:1;border:0;background:none;padding:10px;border-radius:10px;font-family:inherit;font-size:14px;font-weight:700;color:var(--muted);cursor:pointer}
-.tab.active{background:#fff;color:var(--primary);box-shadow:0 3px 10px rgba(15,23,42,.08)}
-label{display:block;font-size:12.5px;font-weight:700;color:var(--muted);margin-bottom:13px}
-input,select,textarea{width:100%;margin-top:6px;padding:12px 14px;border-radius:12px;border:1.5px solid var(--line);background:#fbfcff;font-size:15px;font-family:inherit;color:var(--ink);outline:none;transition:.15s}
-input:focus,select:focus,textarea:focus{border-color:var(--primary);background:#fff;box-shadow:0 0 0 4px rgba(79,70,229,.1)}
-textarea{resize:vertical;min-height:64px}
-.btn{border:0;border-radius:12px;padding:12px 16px;font-size:14.5px;font-weight:800;font-family:inherit;cursor:pointer;transition:.15s;display:inline-flex;align-items:center;justify-content:center;gap:7px}
-.btn:active{transform:scale(.97)}
-.btn.primary{background:linear-gradient(135deg,var(--primary),var(--p2));color:#fff;box-shadow:0 8px 20px rgba(79,70,229,.3)}
-.btn.big{width:100%;padding:15px;font-size:15.5px}
-.btn.ghost{background:#eef1fb;color:var(--primary)}
-.btn.green{background:linear-gradient(135deg,#10b981,#059669);color:#fff;box-shadow:0 8px 18px rgba(14,159,110,.28)}
-.btn.amber{background:#fef3c7;color:#92400e}
-.btn.red{background:#fee2e2;color:#b91c1c}
-.btn.sm{padding:8px 12px;font-size:12.5px;border-radius:10px}
+.num{font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
+
+/* ============ AUTH ============ */
+#authScreen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;
+background:linear-gradient(135deg,#0e2f50 0%,#17466f 45%,#255f8f 100%)}
+.authbox{width:100%;max-width:820px;display:grid;grid-template-columns:1fr;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.35)}
+@media(min-width:760px){.authbox{grid-template-columns:1fr 1.05fr}}
+.authleft{background:#0e2f50;color:#fff;padding:34px 28px;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden}
+.authleft:after{content:"";position:absolute;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.05);right:-70px;bottom:-70px}
+.authleft .lg{width:54px;height:54px;border-radius:8px;background:#d9a419;color:#0e2f50;display:grid;place-items:center;font-size:24px;font-weight:800;margin-bottom:16px}
+.authleft h1{font-size:24px;letter-spacing:.3px}
+.authleft p{font-size:13px;color:#a9c4dd;margin-top:8px;line-height:1.7}
+.authleft ul{margin:18px 0 0;padding:0;list-style:none;font-size:12.5px;color:#c9dcee;line-height:2.1}
+.authleft li:before{content:"▪ ";color:#d9a419;font-weight:800}
+.authright{padding:26px 24px}
+.authright h2{font-size:16px;margin-bottom:16px;color:var(--navy);text-transform:uppercase;letter-spacing:.8px;font-weight:700}
+.tabs{display:flex;border-bottom:1px solid var(--line);margin-bottom:18px}
+.tab{border:0;background:none;padding:9px 14px;font-family:inherit;font-size:13px;font-weight:700;color:var(--muted);cursor:pointer;border-bottom:2.5px solid transparent;margin-bottom:-1px}
+.tab.active{color:var(--navy);border-bottom-color:var(--gold)}
+label{display:block;font-size:11.5px;font-weight:700;color:var(--muted);margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px}
+input,select,textarea{width:100%;margin-top:5px;padding:9px 11px;border-radius:3px;border:1px solid var(--line);background:#fbfcfe;font-size:14px;font-family:inherit;color:var(--ink);outline:none;transition:.12s}
+input:focus,select:focus,textarea:focus{border-color:var(--steel);background:#fff;box-shadow:0 0 0 3px rgba(61,107,150,.14)}
+textarea{resize:vertical;min-height:62px}
+.btn{border:1px solid transparent;border-radius:3px;padding:9px 14px;font-size:12.5px;font-weight:700;font-family:inherit;cursor:pointer;transition:.12s;display:inline-flex;align-items:center;justify-content:center;gap:6px;letter-spacing:.2px}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:var(--navy);color:#fff;border-color:var(--navy)}
+.btn.primary:hover{background:var(--navy2)}
+.btn.ghost{background:#fff;color:var(--navy);border-color:var(--line)}
+.btn.ghost:hover{background:#f2f6fa;border-color:var(--steel)}
+.btn.green{background:var(--green);color:#fff;border-color:var(--green)}
+.btn.amber{background:#fdf3d6;color:#8a6412;border-color:#e8cf8f}
+.btn.red{background:#fdeaea;color:#a31f1f;border-color:#f0bcbc}
+.btn.sm{padding:5px 9px;font-size:11px}
+.btn.big{width:100%;padding:11px;font-size:13.5px}
 .btn.block{width:100%}
-.hint{font-size:12px;color:var(--muted);text-align:center;margin-top:14px;line-height:1.6}
-/* ---------- APP SHELL ---------- */
-.topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 16px;background:linear-gradient(135deg,var(--primary),var(--p2));color:#fff;border-radius:0 0 22px 22px;box-shadow:0 6px 22px rgba(79,70,229,.26)}
-.tb-left{display:flex;align-items:center;gap:11px;min-width:0}
-.avatar{width:42px;height:42px;border-radius:14px;background:rgba(255,255,255,.2);display:grid;place-items:center;font-weight:800;font-size:17px;flex:none;border:1px solid rgba(255,255,255,.3)}
-.tb-shop{font-size:15.5px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:46vw}
-.tb-sub{font-size:11.5px;opacity:.85;margin-top:2px}
+
+/* ============ SHELL ============ */
+.topbar{position:fixed;top:0;left:0;right:0;height:50px;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 14px;z-index:50;border-bottom:3px solid var(--gold)}
+.tb-brand{display:flex;align-items:center;gap:10px;min-width:0}
+.tb-logo{width:30px;height:30px;border-radius:4px;background:var(--gold);color:var(--navy);display:grid;place-items:center;font-weight:800;font-size:14px;flex:none}
+.tb-brand h1{font-size:14.5px;letter-spacing:.3px;white-space:nowrap}
+.tb-brand small{display:block;font-size:9.5px;color:#9dbdd8;letter-spacing:1.2px;text-transform:uppercase;margin-top:1px}
+.tb-mid{display:none;font-size:12px;color:#b9d2e7;align-items:center;gap:8px}
+@media(min-width:900px){.tb-mid{display:flex}}
+.tb-mid b{color:#fff;font-size:12.5px}
 .tb-right{display:flex;align-items:center;gap:8px}
-.badge{font-size:10.5px;font-weight:800;padding:5px 9px;border-radius:8px;background:rgba(255,255,255,.22);letter-spacing:.6px}
-.badge.pro{background:#fde68a;color:#7c2d12}
-.iconbtn{width:34px;height:34px;border-radius:11px;border:1px solid rgba(255,255,255,.32);background:rgba(255,255,255,.15);color:#fff;font-size:15px;cursor:pointer;display:grid;place-items:center}
-main{padding:16px 14px 100px;max-width:660px;margin:0 auto}
-.bottomnav{position:fixed;bottom:0;left:0;right:0;display:flex;background:rgba(255,255,255,.97);backdrop-filter:blur(14px);border-top:1px solid var(--line);padding:8px 6px calc(8px + env(safe-area-inset-bottom));z-index:30}
-.bottomnav button{flex:1;background:none;border:0;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10.5px;font-weight:700;color:var(--muted);font-family:inherit;padding:6px 2px;border-radius:12px;cursor:pointer;transition:.15s}
-.bottomnav button span{font-size:19px;line-height:1}
-.bottomnav button.active{color:var(--primary);background:#eef1ff}
-/* ---------- WIDGETS ---------- */
-.stats{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:14px}
-.stat{padding:14px;border-radius:16px;background:#fff;border:1px solid var(--line);box-shadow:var(--sh)}
-.stat .lbl{font-size:11.5px;color:var(--muted);font-weight:700;display:flex;gap:5px;align-items:center}
-.stat .val{font-size:19px;font-weight:800;margin-top:6px;letter-spacing:-.4px}
-.stat.green .val{color:var(--green)}.stat.red .val{color:var(--red)}.stat.amber .val{color:var(--amber)}.stat.blue .val{color:var(--primary)}
-.quick{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:6px}
-.qbtn{background:#fff;border:1px solid var(--line);border-radius:15px;padding:12px 4px;display:flex;flex-direction:column;align-items:center;gap:6px;font-size:10.5px;font-weight:800;color:var(--ink);font-family:inherit;cursor:pointer;box-shadow:var(--sh)}
-.qbtn span{font-size:20px}
-.qbtn:active{transform:scale(.96)}
-.sechead{display:flex;align-items:center;justify-content:space-between;margin:18px 3px 10px}
-.sechead h3{font-size:14.5px;font-weight:800}
-.linkbtn{background:none;border:0;color:var(--primary);font-weight:800;font-size:12.5px;font-family:inherit;cursor:pointer;padding:4px}
-.item{display:flex;align-items:center;gap:12px;padding:12px 13px;background:#fff;border:1px solid var(--line);border-radius:15px;margin-bottom:9px;box-shadow:var(--sh);cursor:pointer}
-.item:active{transform:scale(.99)}
-.item .av{width:40px;height:40px;border-radius:13px;display:grid;place-items:center;font-weight:800;color:#fff;font-size:15px;flex:none}
-.it-name{font-size:14.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.it-sub{font-size:11.5px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.it-amt{font-size:14.5px;font-weight:800;flex:none;text-align:right}
-.it-amt.red{color:var(--red)}.it-amt.green{color:var(--green)}.it-amt.muted{color:var(--muted)}
-.empty{text-align:center;padding:38px 16px;color:var(--muted);font-size:13.5px;line-height:1.7}
-.empty .big{font-size:38px;display:block;margin-bottom:10px;opacity:.6}
-.searchbox{position:relative;margin-bottom:12px}
-.searchbox input{margin:0;padding-left:40px}
-.searchbox::before{content:"🔍";position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:14px;opacity:.6}
-.adbanner{display:flex;align-items:center;gap:11px;padding:12px 14px;border-radius:15px;background:linear-gradient(135deg,#fef3c7,#fde68a);border:1px solid #fcd34d;margin-bottom:14px;font-size:12.5px;color:#78350f;font-weight:600;line-height:1.5}
-.notice{display:flex;gap:10px;padding:12px 14px;border-radius:14px;background:#eef2ff;border:1px solid #c7d2fe;color:#3730a3;font-size:12.5px;font-weight:600;margin-bottom:14px;line-height:1.5}
-/* ---------- MODAL ---------- */
-.overlay{position:fixed;inset:0;background:rgba(15,23,42,.5);backdrop-filter:blur(3px);z-index:100;display:flex;align-items:flex-end;justify-content:center;animation:fade .18s}
-@keyframes fade{from{opacity:0}to{opacity:1}}
-@keyframes up{from{transform:translateY(24px);opacity:.6}to{transform:translateY(0);opacity:1}}
-.sheet{width:100%;max-width:520px;max-height:92vh;overflow-y:auto;background:#fff;border-radius:22px 22px 0 0;padding:18px 16px calc(22px + env(safe-area-inset-bottom));animation:up .22s}
-@media(min-width:560px){.overlay{align-items:center}.sheet{border-radius:22px;max-height:86vh}}
-.sheethead{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
-.sheethead h3{font-size:17px;font-weight:800}
-.x{width:32px;height:32px;border-radius:10px;border:0;background:#f1f4fb;color:var(--muted);font-size:15px;cursor:pointer}
-.row2{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:6px}
-.ledger-top{text-align:center;padding:16px;border-radius:16px;background:linear-gradient(135deg,#eef2ff,#f5f3ff);margin-bottom:14px;border:1px solid #e0e7ff}
-.ledger-top .big-amt{font-size:29px;font-weight:800;letter-spacing:-1px;color:var(--primary)}
-.ledger-top .lbl{font-size:12px;color:var(--muted);font-weight:700;margin-top:3px}
-.entry{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 0;border-bottom:1px dashed var(--line)}
+.planbadge{font-size:9.5px;font-weight:800;padding:4px 8px;border-radius:3px;background:rgba(255,255,255,.16);letter-spacing:.8px}
+.planbadge.pro{background:var(--gold);color:var(--navy)}
+.iconbtn{width:30px;height:30px;border-radius:4px;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.1);color:#fff;font-size:13px;cursor:pointer;display:grid;place-items:center}
+.iconbtn:hover{background:rgba(255,255,255,.22)}
+
+.sidebar{position:fixed;top:50px;bottom:26px;left:0;width:210px;background:#fff;border-right:1px solid var(--line);overflow-y:auto;z-index:40;padding:8px 0}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 14px;font-size:12.8px;font-weight:600;color:#334c63;cursor:pointer;border-left:3px solid transparent;white-space:nowrap}
+.nav-item:hover{background:#f2f6fa}
+.nav-item.active{background:#eaf2fa;border-left-color:var(--gold);color:var(--navy);font-weight:800}
+.nav-item .ic{font-size:14px;width:18px;text-align:center;flex:none}
+.nav-sep{height:1px;background:var(--line2);margin:8px 12px}
+.nav-lbl{font-size:9.5px;text-transform:uppercase;letter-spacing:1px;color:#93a6b8;font-weight:800;padding:8px 14px 4px}
+
+.content{margin-left:210px;margin-top:50px;padding:16px 18px 60px;min-height:calc(100vh - 76px)}
+.statusbar{position:fixed;bottom:0;left:0;right:0;height:26px;background:#dde5ee;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 12px;font-size:10.5px;color:#5b7288;z-index:45;font-weight:600}
+.statusbar span{display:flex;align-items:center;gap:10px}
+.statusbar b{color:var(--navy)}
+
+@media(max-width:880px){
+  .sidebar{top:auto;bottom:0;left:0;right:0;width:100%;height:58px;display:flex;overflow-x:auto;border-right:0;border-top:1px solid var(--line);padding:0 4px;align-items:center;z-index:48}
+  .nav-item{flex:none;width:74px;flex-direction:column;gap:2px;font-size:9px;padding:7px 2px;border-left:0;border-top:3px solid transparent;text-align:center}
+  .nav-item.active{border-left:0;border-top-color:var(--gold)}
+  .nav-item .ic{font-size:16px;width:auto}
+  .nav-sep,.nav-lbl{display:none}
+  .content{margin-left:0;padding:14px 12px 150px}
+  .statusbar{display:none}
+}
+
+/* ============ PANELS ============ */
+.pagehead{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.pagehead h2{font-size:17px;color:var(--navy);font-weight:800;letter-spacing:.2px}
+.pagehead p{font-size:11.5px;color:var(--muted);margin-top:3px}
+.ph-actions{display:flex;gap:7px;flex-wrap:wrap}
+
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:4px;margin-bottom:14px;overflow:hidden}
+.panel-h{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 13px;background:#f4f8fb;border-bottom:1px solid var(--line);font-size:12px;font-weight:800;color:var(--navy);text-transform:uppercase;letter-spacing:.7px}
+.panel-b{padding:13px}
+.panel-b.flush{padding:0}
+
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+@media(max-width:880px){.kpis{grid-template-columns:1fr 1fr}}
+.kpi{background:#fff;border:1px solid var(--line);border-left:3px solid var(--steel);border-radius:3px;padding:11px 12px}
+.kpi .k-l{font-size:10px;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);font-weight:800}
+.kpi .k-v{font-size:19px;font-weight:800;margin-top:5px;letter-spacing:-.5px;color:var(--navy)}
+.kpi.g{border-left-color:var(--green)}.kpi.g .k-v{color:var(--green)}
+.kpi.r{border-left-color:var(--red)}.kpi.r .k-v{color:var(--red)}
+.kpi.a{border-left-color:var(--gold)}.kpi.a .k-v{color:#a3770e}
+
+.grid2{display:grid;grid-template-columns:1.4fr 1fr;gap:14px}
+@media(max-width:980px){.grid2{grid-template-columns:1fr}}
+
+/* table-like rows */
+.trow{display:flex;align-items:center;gap:10px;padding:9px 13px;border-bottom:1px solid var(--line2);font-size:12.8px;cursor:pointer;transition:.1s}
+.trow:hover{background:#f7fafd}
+.trow:last-child{border-bottom:0}
+.trow .av{width:30px;height:30px;border-radius:3px;display:grid;place-items:center;font-weight:800;color:#fff;font-size:12.5px;flex:none}
+.trow .t-main{flex:1;min-width:0}
+.trow .t-n{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.trow .t-s{font-size:10.8px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.trow .t-a{font-size:13px;font-weight:800;flex:none;font-variant-numeric:tabular-nums}
+.t-a.red{color:var(--red)}.t-a.green{color:var(--green)}.t-a.muted{color:#94a7b8}
+
+.empty{padding:32px 16px;text-align:center;color:var(--muted);font-size:12.5px;line-height:1.9}
+.empty .big{font-size:30px;display:block;margin-bottom:8px;opacity:.5}
+
+.quick{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.qb{background:#fff;border:1px solid var(--line);border-radius:3px;padding:12px 8px;display:flex;flex-direction:column;align-items:center;gap:5px;font-size:11px;font-weight:800;color:var(--navy);font-family:inherit;cursor:pointer;transition:.12s}
+.qb:hover{border-color:var(--steel);background:#f5f9fd}
+.qb span{font-size:19px}
+
+.alert{display:flex;gap:9px;padding:10px 13px;border-radius:3px;font-size:12px;font-weight:600;line-height:1.6;margin-bottom:12px;border:1px solid}
+.alert.info{background:#eaf2fa;border-color:#bcd5ea;color:#1c4f79}
+.alert.warn{background:#fdf6e3;border-color:#ecd99b;color:#7d5c0b}
+.alert.ok{background:#eaf7f0;border-color:#b6e0c9;color:#0b6b46}
+
+.bar{height:7px;border-radius:2px;background:#e8eef4;overflow:hidden;margin-top:5px}
+.bar>i{display:block;height:100%;border-radius:2px;background:var(--steel)}
+
+.mini{display:flex;justify-content:space-between;font-size:11.5px;font-weight:700;color:var(--muted);margin-top:11px}
+.mini b{color:var(--navy);font-variant-numeric:tabular-nums}
+
+.searchrow{display:flex;gap:8px;margin-bottom:12px}
+.searchrow input{margin:0}
+
+/* ============ MODAL ============ */
+.overlay{position:fixed;inset:0;background:rgba(11,32,53,.55);z-index:100;display:flex;align-items:center;justify-content:center;padding:16px;animation:fd .15s}
+@keyframes fd{from{opacity:0}to{opacity:1}}
+@keyframes pop{from{transform:translateY(10px) scale(.98);opacity:.5}to{transform:none;opacity:1}}
+.sheet{width:100%;max-width:470px;max-height:90vh;overflow-y:auto;background:#fff;border-radius:5px;border:1px solid var(--line);animation:pop .16s}
+.sheethead{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--navy);color:#fff;position:sticky;top:0;z-index:2}
+.sheethead h3{font-size:13px;font-weight:800;letter-spacing:.4px;text-transform:uppercase}
+.x{width:26px;height:26px;border-radius:3px;border:0;background:rgba(255,255,255,.16);color:#fff;font-size:12px;cursor:pointer}
+.sheetbody{padding:16px 14px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+
+.ledgertop{text-align:center;padding:14px;border-radius:4px;background:#f4f8fb;border:1px solid var(--line);margin-bottom:14px}
+.ledgertop .big{font-size:26px;font-weight:800;color:var(--navy);letter-spacing:-1px;font-variant-numeric:tabular-nums}
+.ledgertop .lb{font-size:11px;color:var(--muted);font-weight:700;margin-top:3px;text-transform:uppercase;letter-spacing:.6px}
+
+.entry{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px dashed var(--line2);font-size:12.5px}
 .entry:last-child{border-bottom:0}
-.entry .e-l{font-size:13px;font-weight:700}
-.entry .e-d{font-size:11px;color:var(--muted);margin-top:2px}
-.entry .e-a{font-size:14px;font-weight:800;flex:none}
-.plus{color:var(--red)}.minus{color:var(--green)}
-.chip{display:inline-block;font-size:10px;font-weight:800;padding:3px 7px;border-radius:6px;background:#eef1fb;color:var(--primary);margin-left:6px}
-/* ---------- TOAST ---------- */
-#toast{position:fixed;left:50%;bottom:96px;transform:translate(-50%,26px);background:#0f172a;color:#fff;padding:12px 20px;border-radius:13px;font-size:13.5px;font-weight:700;opacity:0;pointer-events:none;transition:.25s;z-index:200;max-width:88vw;text-align:center;box-shadow:0 12px 30px rgba(0,0,0,.3)}
-#toast.show{opacity:1;transform:translate(-50%,0)}
-/* ---------- ADMIN ---------- */
-.adminbar{position:sticky;top:0;z-index:20;padding:14px 16px;background:linear-gradient(135deg,#0f172a,#1e293b);color:#fff;display:flex;align-items:center;justify-content:space-between;gap:10px;box-shadow:0 6px 20px rgba(15,23,42,.3)}
-.adminbar h2{font-size:15px;font-weight:800}
-.adminbar small{font-size:10.5px;opacity:.7;display:block;margin-top:2px}
-.atabs{display:flex;gap:6px;padding:12px 14px 0;max-width:660px;margin:0 auto;overflow-x:auto}
-.atab{flex:none;border:0;background:#fff;border:1px solid var(--line);padding:9px 15px;border-radius:11px;font-family:inherit;font-size:12.5px;font-weight:800;color:var(--muted);cursor:pointer}
-.atab.active{background:linear-gradient(135deg,var(--primary),var(--p2));color:#fff;border-color:transparent;box-shadow:0 6px 16px rgba(79,70,229,.28)}
-.tablewrap{overflow-x:auto;border-radius:14px;border:1px solid var(--line);background:#fff}
-table{width:100%;border-collapse:collapse;font-size:12.5px;min-width:520px}
-th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
-th{background:#f8faff;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:800}
+.entry .el{font-weight:700}
+.entry .ed{font-size:10.8px;color:var(--muted);margin-top:2px}
+.entry .ea{font-weight:800;flex:none;font-variant-numeric:tabular-nums}
+
+/* ============ ADMIN ============ */
+.admintop{position:fixed;top:0;left:0;right:0;height:50px;background:#0b2035;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 14px;z-index:50;border-bottom:3px solid #d9a419}
+.admintop h1{font-size:13.5px;letter-spacing:.4px}
+.admintop small{display:block;font-size:9.5px;color:#8fa9c0;letter-spacing:.6px;margin-top:1px}
+.adminwrap{margin-top:50px;padding:14px 16px 60px;max-width:1080px;margin-left:auto;margin-right:auto}
+.atabs{display:flex;gap:0;border-bottom:1px solid var(--line);margin-bottom:14px;overflow-x:auto}
+.atab{border:0;background:none;padding:9px 16px;font-family:inherit;font-size:12px;font-weight:800;color:var(--muted);cursor:pointer;border-bottom:2.5px solid transparent;margin-bottom:-1px;white-space:nowrap;text-transform:uppercase;letter-spacing:.6px}
+.atab.active{color:var(--navy);border-bottom-color:var(--gold)}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:4px;background:#fff}
+table{width:100%;border-collapse:collapse;font-size:12px;min-width:560px}
+th,td{padding:8px 11px;text-align:left;border-bottom:1px solid var(--line2);white-space:nowrap}
+th{background:#f4f8fb;font-size:9.8px;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);font-weight:800}
 tr:last-child td{border-bottom:0}
-.pill{font-size:10.5px;font-weight:800;padding:4px 9px;border-radius:20px;display:inline-block}
-.pill.pro{background:#dcfce7;color:#166534}
-.pill.free{background:#f1f5f9;color:#64748b}
-.pill.blocked{background:#fee2e2;color:#b91c1c}
-.bar{height:9px;border-radius:6px;background:#eef1fb;overflow:hidden;margin-top:6px}
-.bar>i{display:block;height:100%;border-radius:6px;background:linear-gradient(90deg,var(--primary),var(--p2))}
-.plan{background:#fff;border:1.5px solid var(--line);border-radius:17px;padding:16px;margin-bottom:11px;position:relative;box-shadow:var(--sh)}
-.plan.hot{border-color:var(--primary);box-shadow:0 10px 28px rgba(79,70,229,.18)}
-.plan .pname{font-size:15px;font-weight:800;display:flex;align-items:center;gap:8px}
-.plan .price{font-size:24px;font-weight:800;color:var(--primary);margin:6px 0 2px;letter-spacing:-.6px}
-.plan .price small{font-size:12px;color:var(--muted);font-weight:700}
-.plan ul{margin:10px 0 14px;padding-left:18px;font-size:12.5px;color:#334155;line-height:1.85}
-.taginline{position:absolute;top:-9px;right:14px;background:linear-gradient(135deg,var(--primary),var(--p2));color:#fff;font-size:10px;font-weight:800;padding:4px 11px;border-radius:20px;letter-spacing:.4px}
+.pill{font-size:9.5px;font-weight:800;padding:3px 7px;border-radius:2px;display:inline-block;letter-spacing:.4px}
+.pill.pro{background:#dcf1e6;color:#0b6b46}
+.pill.free{background:#eef2f6;color:#64798f}
+.pill.blocked{background:#fdeaea;color:#a31f1f}
+
+.plan{background:#fff;border:1px solid var(--line);border-radius:4px;padding:15px;margin-bottom:11px;position:relative}
+.plan.hot{border:2px solid var(--navy)}
+.plan .pn{font-size:14px;font-weight:800;color:var(--navy);text-transform:uppercase;letter-spacing:.6px}
+.plan .pr{font-size:23px;font-weight:800;color:var(--navy);margin:6px 0 2px;letter-spacing:-.7px}
+.plan .pr small{font-size:11px;color:var(--muted);font-weight:700;letter-spacing:0}
+.plan ul{margin:10px 0 13px;padding-left:17px;font-size:12px;color:#3a5468;line-height:1.95}
+.tag{position:absolute;top:-8px;right:12px;background:var(--gold);color:var(--navy);font-size:9px;font-weight:800;padding:3px 9px;border-radius:2px;letter-spacing:.6px}
+
+/* ============ CHATBOT ============ */
+#chatFab{position:fixed;right:16px;bottom:38px;width:50px;height:50px;border-radius:50%;background:var(--navy);color:#fff;font-size:21px;display:grid;place-items:center;box-shadow:0 6px 18px rgba(14,47,80,.42);cursor:pointer;z-index:70;border:2px solid var(--gold);transition:.15s}
+#chatFab:hover{transform:scale(1.06)}
+#chatPanel{position:fixed;right:14px;bottom:96px;width:350px;max-width:calc(100vw - 20px);height:470px;max-height:calc(100vh - 140px);background:#fff;border:1px solid var(--line);border-radius:6px;display:flex;flex-direction:column;z-index:71;box-shadow:0 18px 44px rgba(11,32,53,.3);overflow:hidden}
+.chat-h{background:var(--navy);color:#fff;padding:9px 12px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.chat-h .ch-t{display:flex;align-items:center;gap:8px}
+.chat-h .dot{width:7px;height:7px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 3px rgba(74,222,128,.25)}
+.chat-h h4{font-size:12.5px;font-weight:800;letter-spacing:.3px}
+.chat-h small{display:block;font-size:9.5px;color:#a9c4dd;margin-top:1px}
+.chat-msgs{flex:1;overflow-y:auto;padding:12px;background:#f7fafd;display:flex;flex-direction:column;gap:9px}
+.msg{max-width:88%;padding:8px 11px;border-radius:6px;font-size:12.3px;line-height:1.65;white-space:pre-wrap;word-break:break-word}
+.msg.bot{background:#fff;border:1px solid var(--line);align-self:flex-start;border-bottom-left-radius:1px;color:#22384d}
+.msg.user{background:var(--navy);color:#fff;align-self:flex-end;border-bottom-right-radius:1px}
+.msg b{color:var(--navy)}
+.msg.user b{color:#fff}
+.chat-chips{display:flex;gap:6px;padding:8px 10px;overflow-x:auto;background:#fff;border-top:1px solid var(--line2);flex:none}
+.chip{flex:none;border:1px solid var(--line);background:#f4f8fb;color:var(--navy);font-family:inherit;font-size:10.5px;font-weight:700;padding:5px 9px;border-radius:12px;cursor:pointer;white-space:nowrap}
+.chip:hover{background:#e6eff7;border-color:var(--steel)}
+.chat-in{display:flex;gap:6px;padding:8px;border-top:1px solid var(--line2);background:#fff;flex:none}
+.chat-in input{margin:0;font-size:12.5px;padding:8px 10px}
+.chat-in button{flex:none;width:38px;border:0;border-radius:3px;background:var(--navy);color:#fff;font-size:14px;cursor:pointer}
+
+#toast{position:fixed;left:50%;bottom:82px;transform:translate(-50%,20px);background:#0b2035;color:#fff;padding:10px 18px;border-radius:4px;font-size:12.5px;font-weight:700;opacity:0;pointer-events:none;transition:.22s;z-index:200;max-width:88vw;text-align:center;box-shadow:0 10px 26px rgba(0,0,0,.3)}
+#toast.show{opacity:1;transform:translate(-50%,0)}
 </style>
 </head>
 <body>
 
 <!-- ================= AUTH ================= -->
-<div id="authScreen" class="screen active">
-  <div class="authwrap">
-    <div class="brand">
-      <div class="logo">दु</div>
-      <h1>दुकानदार</h1>
-      <p>उधारी • हिसाब • स्टॉक — सब एक जगह</p>
+<div id="authScreen">
+  <div class="authbox">
+    <div class="authleft">
+      <div class="lg">ख</div>
+      <h1>खाता साथी</h1>
+      <p>दुकान का हर हिसाब — एक आसान बही में।</p>
+      <ul>
+        <li>ग्राहक उधारी व भुगतान</li>
+        <li>बिक्री, खर्च और मुनाफ़ा</li>
+        <li>स्टॉक व कम-स्टॉक अलर्ट</li>
+        <li>WhatsApp रिमाइंडर</li>
+        <li>AI सहायक — हर सवाल का जवाब</li>
+      </ul>
     </div>
-    <div class="card authcard">
+    <div class="authright">
+      <h2>लॉगिन</h2>
       <div class="tabs">
         <button class="tab active" data-auth="login">लॉगिन</button>
         <button class="tab" data-auth="signup">नया अकाउंट</button>
       </div>
 
       <form id="loginForm" onsubmit="return doLogin(event)">
-        <label>ईमेल / मोबाइल
-          <input id="loginEmail" type="text" required placeholder="aapka@email.com" autocomplete="username">
-        </label>
-        <label>पासवर्ड
-          <input id="loginPass" type="password" required placeholder="••••••••" autocomplete="current-password">
-        </label>
+        <label>ईमेल / मोबाइल<input id="loginEmail" required placeholder="aapka@email.com" autocomplete="username"></label>
+        <label>पासवर्ड<input id="loginPass" type="password" required placeholder="••••••••" autocomplete="current-password"></label>
         <button class="btn primary big" type="submit">लॉगिन करें</button>
-        <p class="hint">पहली बार आ रहे हैं? ऊपर “नया अकाउंट” टैब चुनें।</p>
+        <p style="font-size:11px;color:var(--muted);margin-top:12px;line-height:1.7">पहली बार? ऊपर “नया अकाउंट” टैब चुनें।</p>
       </form>
 
       <form id="signupForm" class="hide" onsubmit="return doSignup(event)">
-        <label>दुकान का नाम
-          <input id="suShop" required placeholder="जैसे: शर्मा किराना स्टोर">
-        </label>
-        <label>आपका नाम
-          <input id="suName" required placeholder="जैसे: राकेश शर्मा">
-        </label>
-        <label>मोबाइल नंबर
-          <input id="suPhone" required type="tel" inputmode="numeric" placeholder="10 अंकों का नंबर">
-        </label>
-        <label>ईमेल
-          <input id="suEmail" required type="email" placeholder="aapka@email.com">
-        </label>
-        <label>पासवर्ड
-          <input id="suPass" required type="password" minlength="4" placeholder="कम से कम 4 अक्षर">
-        </label>
+        <label>दुकान का नाम<input id="suShop" required placeholder="शर्मा किराना स्टोर"></label>
+        <div class="row2">
+          <label>आपका नाम<input id="suName" required placeholder="राकेश शर्मा"></label>
+          <label>मोबाइल<input id="suPhone" required type="tel" inputmode="numeric" placeholder="10 अंक"></label>
+        </div>
+        <label>ईमेल<input id="suEmail" required type="email" placeholder="aapka@email.com"></label>
+        <label>पासवर्ड<input id="suPass" required type="password" minlength="4" placeholder="कम से कम 4 अक्षर"></label>
         <button class="btn primary big" type="submit">अकाउंट बनाएं</button>
-        <p class="hint">मूल सुविधाएँ हमेशा मुफ़्त रहेंगी।</p>
       </form>
     </div>
   </div>
 </div>
 
 <!-- ================= APP ================= -->
-<div id="appScreen" class="screen">
+<div id="appScreen" class="hide">
   <header class="topbar">
-    <div class="tb-left">
-      <div class="avatar" id="avatar">दु</div>
-      <div style="min-width:0">
-        <div class="tb-shop" id="tbShop">दुकान</div>
-        <div class="tb-sub" id="tbSub">नमस्ते</div>
+    <div class="tb-brand">
+      <div class="tb-logo">ख</div>
+      <div>
+        <h1>खाता साथी</h1>
+        <small>Dukan Hisab</small>
       </div>
     </div>
+    <div class="tb-mid">
+      <span>कंपनी:</span><b id="tbShop">—</b>
+      <span style="opacity:.5">|</span>
+      <span id="tbSub">—</span>
+    </div>
     <div class="tb-right">
-      <span class="badge" id="planBadge">FREE</span>
+      <span class="planbadge" id="planBadge">FREE</span>
       <button class="iconbtn" onclick="logout()" title="लॉगआउट">⏻</button>
     </div>
   </header>
-  <main id="main"></main>
-  <nav class="bottomnav" id="nav">
-    <button data-page="home" class="active"><span>🏠</span>होम</button>
-    <button data-page="customers"><span>👥</span>ग्राहक</button>
-    <button data-page="sales"><span>🧾</span>बिक्री</button>
-    <button data-page="stock"><span>📦</span>स्टॉक</button>
-    <button data-page="more"><span>☰</span>और</button>
-  </nav>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="nav-lbl">मुख्य</div>
+    <div class="nav-item active" data-page="home"><span class="ic">▣</span>डैशबोर्ड</div>
+    <div class="nav-item" data-page="customers"><span class="ic">👥</span>ग्राहक / उधारी</div>
+    <div class="nav-item" data-page="suppliers"><span class="ic">🏭</span>सप्लायर / देय</div>
+    <div class="nav-sep"></div>
+    <div class="nav-lbl">लेनदेन</div>
+    <div class="nav-item" data-page="sales"><span class="ic">🧾</span>बिक्री</div>
+    <div class="nav-item" data-page="expenses"><span class="ic">💸</span>खर्च</div>
+    <div class="nav-item" data-page="stock"><span class="ic">📦</span>स्टॉक</div>
+    <div class="nav-sep"></div>
+    <div class="nav-lbl">टूल्स</div>
+    <div class="nav-item" data-page="reminders"><span class="ic">🔔</span>रिमाइंडर</div>
+    <div class="nav-item" data-page="reports"><span class="ic">📊</span>रिपोर्ट</div>
+    <div class="nav-sep"></div>
+    <div class="nav-lbl">अन्य</div>
+    <div class="nav-item" data-page="premium"><span class="ic">⭐</span>प्रीमियम</div>
+    <div class="nav-item" data-page="settings"><span class="ic">⚙</span>सेटिंग्स</div>
+  </aside>
+
+  <main class="content" id="content"></main>
+
+  <footer class="statusbar">
+    <span>दिनांक: <b id="sbDate">—</b></span>
+    <span>F1 सहायता · F2 सेव · F3 बंद</span>
+    <span>खाता साथी v1.0</span>
+  </footer>
 </div>
 
 <!-- ================= ADMIN ================= -->
-<div id="adminScreen" class="screen">
-  <div class="adminbar">
-    <div>
-      <h2>🛡️ एडमिन कंट्रोल पैनल</h2>
-      <small>shansari901@gmail.com · Full Access</small>
+<div id="adminScreen" class="hide">
+  <div class="admintop">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div class="tb-logo">🛡</div>
+      <div>
+        <h1>एडमिन कंट्रोल पैनल</h1>
+        <small>shansari901@gmail.com · Full Control</small>
+      </div>
     </div>
     <button class="iconbtn" onclick="logout()">⏻</button>
   </div>
-  <div class="atabs" id="atabs">
-    <button class="atab active" data-atab="dash">डैशबोर्ड</button>
-    <button class="atab" data-atab="users">यूज़र्स</button>
-    <button class="atab" data-atab="payments">भुगतान</button>
-    <button class="atab" data-atab="settings">सेटिंग्स</button>
+  <div class="adminwrap">
+    <div class="atabs" id="atabs">
+      <button class="atab active" data-atab="dash">डैशबोर्ड</button>
+      <button class="atab" data-atab="users">यूज़र्स</button>
+      <button class="atab" data-atab="payments">भुगतान</button>
+      <button class="atab" data-atab="settings">सेटिंग्स</button>
+    </div>
+    <div id="adminMain"></div>
   </div>
-  <main id="adminMain"></main>
+</div>
+
+<!-- ================= CHATBOT ================= -->
+<div id="chatFab" class="hide" onclick="toggleChat()">💬</div>
+<div id="chatPanel" class="hide">
+  <div class="chat-h">
+    <div class="ch-t">
+      <div class="dot"></div>
+      <div>
+        <h4>खाता साथी सहायक</h4>
+        <small>हर सवाल का जवाब — तुरंत</small>
+      </div>
+    </div>
+    <button class="x" onclick="toggleChat()">✕</button>
+  </div>
+  <div class="chat-msgs" id="chatMsgs"></div>
+  <div class="chat-chips" id="chatChips"></div>
+  <form class="chat-in" onsubmit="return sendChat(event)">
+    <input id="chatInput" placeholder="कुछ भी पूछें..." autocomplete="off">
+    <button type="submit">➤</button>
+  </form>
 </div>
 
 <div id="modalRoot"></div>
@@ -231,13 +364,13 @@ tr:last-child td{border-bottom:0}
 
 <script>
 /* =========================================================
-   दुकानदार — सुपर ऐप   (Single file, localStorage)
+   खाता साथी — Tally-style shop ledger + AI assistant
    ========================================================= */
-const LS = 'dukandar_v3';
+const LS = 'khatasathi_v1';
 const ADMIN_EMAIL = 'shansari901@gmail.com';
 const ADMIN_PASS  = '$@731825';
 
-let DB, CU = null, page = 'home', atab = 'dash', partyKind = 'customer';
+let DB, CU = null, page = 'home', atab = 'dash', partyKind = 'customer', searchQ = '';
 
 /* ---------------- HELPERS ---------------- */
 const $  = (s, r = document) => r.querySelector(s);
@@ -247,16 +380,20 @@ const inr = n => '₹' + (Math.round((+n || 0) * 100) / 100).toLocaleString('en-
 const today = () => new Date().toISOString().slice(0, 10);
 const monthKey = d => (d || today()).slice(0, 7);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-const greet = () => { const h = new Date().getHours(); return h < 12 ? 'सुप्रभात' : h < 17 ? 'नमस्ते' : h < 20 ? 'शुभ संध्या' : 'शुभ रात्रि'; };
 const dmy = d => { if (!d) return '—'; const [y, m, dd] = d.split('-'); return dd + '/' + m + '/' + y; };
-const COLORS = ['#4f46e5', '#0e9f6e', '#e02424', '#d97706', '#0891b2', '#7c3aed', '#db2777', '#059669'];
+const greet = () => { const h = new Date().getHours(); return h < 12 ? 'सुप्रभात' : h < 17 ? 'नमस्ते' : h < 20 ? 'शुभ संध्या' : 'शुभ रात्रि'; };
+const COLORS = ['#0e2f50', '#0d7a4f', '#a31f1f', '#8a6412', '#1a5f9e', '#5b3a8f', '#9c2c6a', '#146b6b'];
 const colorFor = s => { let h = 0; for (let i = 0; i < (s || '').length; i++) h = (h * 31 + s.charCodeAt(i)) % 997; return COLORS[h % COLORS.length]; };
 
 function toast(msg) {
   const t = $('#toast'); t.textContent = msg; t.classList.add('show');
-  clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('show'), 2400);
+  clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('show'), 2300);
 }
-function show(sel) { $$('.screen').forEach(s => s.classList.remove('active')); $(sel).classList.add('active'); window.scrollTo(0, 0); }
+function show(sel) {
+  ['#authScreen', '#appScreen', '#adminScreen'].forEach(s => $(s).classList.add('hide'));
+  if (sel !== '#authScreen') $(sel).classList.remove('hide');
+  window.scrollTo(0, 0);
+}
 
 /* ---------------- DB ---------------- */
 function defaultDB() {
@@ -273,10 +410,10 @@ function defaultDB() {
   };
 }
 function loadDB() {
-  try { const raw = localStorage.getItem(LS); if (raw) { const d = JSON.parse(raw); if (d && d.users) return d; } } catch (e) { }
+  try { const raw = localStorage.getItem(LS); if (raw) { const d = JSON.parse(raw); if (d && d.users) return d; } } catch (e) {}
   return defaultDB();
 }
-function saveDB() { try { localStorage.setItem(LS, JSON.stringify(DB)); } catch (e) { toast('स्टोरेज भर गया है'); } }
+function saveDB() { try { localStorage.setItem(LS, JSON.stringify(DB)); } catch (e) { toast('स्टोरेज भर गया'); } }
 
 DB = loadDB();
 DB.data = DB.data || {}; DB.payments = DB.payments || [];
@@ -284,7 +421,7 @@ DB.settings = DB.settings || { ads: true, notice: '', prices: { basic: 29, pro: 
 if (!DB.settings.prices) DB.settings.prices = { basic: 29, pro: 59, business: 99 };
 
 function userData(id) {
-  id = id || CU.id;
+  id = id || (CU && CU.id);
   if (!DB.data[id]) DB.data[id] = { customers: [], suppliers: [], sales: [], expenses: [], stock: [] };
   const d = DB.data[id];
   ['customers', 'suppliers', 'sales', 'expenses', 'stock'].forEach(k => { if (!Array.isArray(d[k])) d[k] = []; });
@@ -303,7 +440,7 @@ function isPro(u) {
   if (u.role === 'admin') return true;
   return u.plan && u.plan !== 'free' && (!u.planExpiry || u.planExpiry > Date.now());
 }
-function planName(p) { return p === 'basic' ? 'बेसिक' : p === 'pro' ? 'प्रो' : p === 'business' ? 'बिज़नेस' : 'फ्री'; }
+const planName = p => p === 'basic' ? 'बेसिक' : p === 'pro' ? 'प्रो' : p === 'business' ? 'बिज़नेस' : 'फ्री';
 
 /* ---------------- AUTH ---------------- */
 $$('.tab').forEach(t => t.onclick = () => {
@@ -316,68 +453,73 @@ $$('.tab').forEach(t => t.onclick = () => {
 function doLogin(e) {
   e.preventDefault();
   const idf = $('#loginEmail').value.trim().toLowerCase();
-  const pass = $('#loginPass').value;
   const u = DB.users.find(x => (x.email || '').toLowerCase() === idf || (x.phone || '') === idf);
-  if (!u || u.pass !== pass) { toast('❌ ईमेल या पासवर्ड गलत है'); return false; }
-  if (u.blocked) { toast('🚫 यह अकाउंट ब्लॉक कर दिया गया है'); return false; }
-  DB.session = { id: u.id }; saveDB();
-  startSession(u);
+  if (!u || u.pass !== $('#loginPass').value) { toast('❌ ईमेल या पासवर्ड गलत है'); return false; }
+  if (u.blocked) { toast('🚫 यह अकाउंट ब्लॉक है'); return false; }
+  DB.session = { id: u.id }; saveDB(); startSession(u);
   return false;
 }
 
 function doSignup(e) {
   e.preventDefault();
   const email = $('#suEmail').value.trim().toLowerCase();
-  const phone = $('#suPhone').value.trim();
   if (email === ADMIN_EMAIL) { toast('यह ईमेल उपलब्ध नहीं है'); return false; }
   if (DB.users.some(u => (u.email || '').toLowerCase() === email)) { toast('यह ईमेल पहले से रजिस्टर्ड है'); return false; }
   const u = {
     id: uid(), shop: $('#suShop').value.trim(), name: $('#suName').value.trim(),
-    phone, email, pass: $('#suPass').value, role: 'user',
-    plan: 'free', planExpiry: 0, createdAt: Date.now()
+    phone: $('#suPhone').value.trim(), email, pass: $('#suPass').value,
+    role: 'user', plan: 'free', planExpiry: 0, createdAt: Date.now()
   };
   DB.users.push(u); userData(u.id); DB.session = { id: u.id }; saveDB();
-  toast('🎉 अकाउंट बन गया!');
-  startSession(u);
+  toast('🎉 अकाउंट बन गया!'); startSession(u);
   return false;
 }
 
 function startSession(u) {
   CU = u;
+  $('#chatFab').classList.remove('hide');
   if (u.role === 'admin') { show('#adminScreen'); atab = 'dash'; renderAdmin(); }
-  else { show('#appScreen'); page = 'home'; renderApp(); }
+  else { show('#appScreen'); page = 'home'; renderApp(); initChat(); }
 }
 
 function logout() {
   DB.session = null; saveDB(); CU = null;
   $('#loginEmail').value = ''; $('#loginPass').value = '';
+  $('#chatFab').classList.add('hide'); $('#chatPanel').classList.add('hide');
   show('#authScreen'); toast('लॉगआउट हो गया');
 }
 
 /* ---------------- APP ROUTER ---------------- */
-$$('#nav button').forEach(b => b.onclick = () => { page = b.dataset.page; renderApp(); });
+$$('#sidebar .nav-item').forEach(b => b.onclick = () => { page = b.dataset.page; renderApp(); });
 
 function renderApp() {
   if (!CU) return;
   $('#tbShop').textContent = CU.shop || CU.name || 'दुकान';
-  $('#tbSub').textContent = greet() + ' · ' + (CU.name || '');
-  $('#avatar').textContent = (CU.shop || CU.name || 'द').trim().charAt(0).toUpperCase();
+  $('#tbSub').textContent = greet() + ', ' + (CU.name || '');
+  $('#sbDate').textContent = dmy(today());
   const pro = isPro();
   const pb = $('#planBadge');
   pb.textContent = pro ? planName(CU.plan).toUpperCase() : 'FREE';
-  pb.className = 'badge' + (pro ? ' pro' : '');
-  $$('#nav button').forEach(b => b.classList.toggle('active', b.dataset.page === page));
+  pb.className = 'planbadge' + (pro ? ' pro' : '');
+  $$('#sidebar .nav-item').forEach(b => b.classList.toggle('active', b.dataset.page === page));
 
   const map = {
-    home: pageHome, customers: () => partyList('customer'), sales: pageSales, stock: pageStock,
-    more: pageMore, expenses: pageExpenses, suppliers: () => partyList('supplier'),
+    home: pageHome, customers: () => pageParty('customer'), suppliers: () => pageParty('supplier'),
+    sales: pageSales, expenses: pageExpenses, stock: pageStock,
     reminders: pageReminders, reports: pageReports, premium: pagePremium, settings: pageSettings
   };
-  $('#main').innerHTML = (map[page] || pageHome)();
+  $('#content').innerHTML = (map[page] || pageHome)();
   window.scrollTo(0, 0);
 }
 
-/* ---------------- HOME ---------------- */
+/* ---------------- UI PIECES ---------------- */
+function ph(title, sub, actions) {
+  return `<div class="pagehead">
+    <div><h2>${title}</h2><p>${sub || ''}</p></div>
+    <div class="ph-actions">${actions || ''}</div>
+  </div>`;
+}
+
 function allTx() {
   const d = ud(), out = [];
   d.customers.forEach(c => (c.entries || []).forEach(e => out.push({ ts: e.ts || 0, name: c.name, kind: 'ग्राहक', type: e.type, amount: e.amount, date: e.date })));
@@ -387,6 +529,7 @@ function allTx() {
   return out.sort((a, b) => b.ts - a.ts);
 }
 
+/* ---------------- HOME ---------------- */
 function pageHome() {
   const d = ud();
   const lena = d.customers.reduce((s, c) => s + bal(c), 0);
@@ -395,137 +538,131 @@ function pageHome() {
   const mSale = d.sales.filter(s => monthKey(s.date) === monthKey()).reduce((a, b) => a + (+b.amount || 0), 0);
   const mExp = d.expenses.filter(s => monthKey(s.date) === monthKey()).reduce((a, b) => a + (+b.amount || 0), 0);
   const stockVal = d.stock.reduce((a, b) => a + (+b.qty || 0) * (+b.buy || 0), 0);
-  const lowStock = d.stock.filter(s => +s.qty <= +(s.min || 0)).length;
-  const tx = allTx().slice(0, 6);
+  const low = d.stock.filter(s => +s.qty <= +(s.min || 0));
+  const tx = allTx().slice(0, 7);
+  const profit = mSale - mExp;
 
-  const adsOn = DB.settings.ads && !isPro();
-  const adHtml = adsOn ? `<div class="adbanner">📢 <div>यह विज्ञापन आपको मुफ़्त सुविधा देने के लिए है। <b>प्रीमियम</b> लेकर विज्ञापन हटाएँ।</div></div>` : '';
-  const noticeHtml = DB.settings.notice ? `<div class="notice">🔔 <div>${esc(DB.settings.notice)}</div></div>` : '';
-
-  const txHtml = tx.length ? tx.map(t => {
+  const txRows = tx.length ? tx.map(t => {
     let cls = 'muted', sign = '';
-    if (t.type === 'udhari') { cls = 'red'; sign = '+'; }
-    else if (t.type === 'jama') { cls = 'green'; sign = '−'; }
-    else if (t.type === 'kharid') { cls = 'red'; sign = '+'; }
-    else if (t.type === 'bhugtan') { cls = 'green'; sign = '−'; }
-    else if (t.type === 'sale') { cls = 'green'; sign = '+'; }
-    else if (t.type === 'expense') { cls = 'red'; sign = '−'; }
-    return `<div class="item" style="cursor:default">
-      <div class="av" style="background:${t.kind === 'बिक्री' ? '#0e9f6e' : t.kind === 'खर्च' ? '#e02424' : colorFor(t.name)}">${esc(t.kind).charAt(0)}</div>
-      <div style="flex:1;min-width:0">
-        <div class="it-name">${esc(t.name)}</div>
-        <div class="it-sub">${esc(t.kind)} · ${dmy(t.date)}</div>
-      </div>
-      <div class="it-amt ${cls}">${sign}${inr(t.amount)}</div>
+    if (t.type === 'udhari' || t.type === 'kharid' || t.type === 'expense') { cls = 'red'; sign = '−'; }
+    else { cls = 'green'; sign = '+'; }
+    return `<div class="trow" style="cursor:default">
+      <div class="av" style="background:${t.kind === 'बिक्री' ? '#0d7a4f' : t.kind === 'खर्च' ? '#a31f1f' : colorFor(t.name)}">${esc(t.kind).charAt(0)}</div>
+      <div class="t-main"><div class="t-n">${esc(t.name)}</div><div class="t-s">${esc(t.kind)} · ${dmy(t.date)}</div></div>
+      <div class="t-a ${cls}">${sign}${inr(t.amount)}</div>
     </div>`;
-  }).join('') : `<div class="empty"><span class="big">🧾</span>अभी कोई लेनदेन नहीं है।<br>नीचे से पहला लेनदेन जोड़ें।</div>`;
+  }).join('') : `<div class="empty"><span class="big">▤</span>कोई लेनदेन नहीं।<br>दाईं ओर से पहला लेनदेन जोड़ें।</div>`;
+
+  const alertHtml = DB.settings.notice
+    ? `<div class="alert info">📢 <div>${esc(DB.settings.notice)}</div></div>` : '';
+  const adHtml = (DB.settings.ads && !isPro())
+    ? `<div class="alert warn">📣 <div>यह विज्ञापन आपको मुफ़्त सुविधा देता है। <b>प्रीमियम</b> लेकर हटाएँ।</div></div>` : '';
 
   return `
-  ${noticeHtml}${adHtml}
-  <div class="stats">
-    <div class="stat green"><div class="lbl">👥 कुल उधारी (लेना है)</div><div class="val">${inr(lena)}</div></div>
-    <div class="stat red"><div class="lbl">🏭 देना है (सप्लायर)</div><div class="val">${inr(dena)}</div></div>
-    <div class="stat blue"><div class="lbl">🧾 आज की बिक्री</div><div class="val">${inr(todaySale)}</div></div>
-    <div class="stat amber"><div class="lbl">📦 स्टॉक वैल्यू</div><div class="val">${inr(stockVal)}</div></div>
+  ${alertHtml}${adHtml}
+  <div class="kpis">
+    <div class="kpi g"><div class="k-l">कुल उधारी (लेना)</div><div class="k-v num">${inr(lena)}</div></div>
+    <div class="kpi r"><div class="k-l">देना है (सप्लायर)</div><div class="k-v num">${inr(dena)}</div></div>
+    <div class="kpi a"><div class="k-l">आज की बिक्री</div><div class="k-v num">${inr(todaySale)}</div></div>
+    <div class="kpi"><div class="k-l">स्टॉक वैल्यू</div><div class="k-v num">${inr(stockVal)}</div></div>
   </div>
 
-  <div class="card" style="padding:14px;margin-bottom:14px">
-    <div style="display:flex;justify-content:space-between;font-size:12.5px;font-weight:700;color:var(--muted)">
-      <span>इस महीने की बिक्री</span><span style="color:var(--green)">${inr(mSale)}</span>
+  <div class="grid2">
+    <div class="panel">
+      <div class="panel-h"><span>हाल के लेनदेन</span><button class="btn sm ghost" onclick="go('reports')">रिपोर्ट →</button></div>
+      <div class="panel-b flush">${txRows}</div>
     </div>
-    <div class="bar"><i style="width:${mSale + mExp ? Math.min(100, mSale / (mSale + mExp) * 100) : 0}%"></i></div>
-    <div style="display:flex;justify-content:space-between;font-size:12.5px;font-weight:700;color:var(--muted);margin-top:12px">
-      <span>इस महीने का खर्च</span><span style="color:var(--red)">${inr(mExp)}</span>
+
+    <div>
+      <div class="panel">
+        <div class="panel-h">तेज़ कार्य</div>
+        <div class="panel-b">
+          <div class="quick">
+            <button class="qb" onclick="openPartyForm('customer')"><span>👤</span>ग्राहक जोड़ें</button>
+            <button class="qb" onclick="openSaleForm()"><span>🧾</span>बिक्री</button>
+            <button class="qb" onclick="openExpenseForm()"><span>💸</span>खर्च</button>
+            <button class="qb" onclick="openStockForm()"><span>📦</span>स्टॉक</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-h">इस महीने का सारांश</div>
+        <div class="panel-b">
+          <div class="mini"><span>बिक्री</span><b style="color:var(--green)">${inr(mSale)}</b></div>
+          <div class="bar"><i style="width:${mSale + mExp ? Math.min(100, mSale / (mSale + mExp) * 100) : 0}%;background:linear-gradient(90deg,#34a06e,#0d7a4f)"></i></div>
+          <div class="mini"><span>खर्च</span><b style="color:var(--red)">${inr(mExp)}</b></div>
+          <div class="bar"><i style="width:${mSale + mExp ? Math.min(100, mExp / (mSale + mExp) * 100) : 0}%;background:linear-gradient(90deg,#e07a7a,#a31f1f)"></i></div>
+          <div class="mini" style="border-top:1px dashed var(--line);padding-top:10px;margin-top:12px">
+            <span style="color:var(--navy);font-weight:800">मुनाफ़ा</span>
+            <b style="font-size:14px;color:${profit >= 0 ? 'var(--green)' : 'var(--red)'}">${inr(profit)}</b>
+          </div>
+        </div>
+      </div>
+
+      ${low.length ? `<div class="alert warn" style="margin-bottom:0">⚠️ <div><b>${low.length}</b> आइटम स्टॉक में कम — <u style="cursor:pointer" onclick="go('stock')">देखें</u></div></div>` : ''}
     </div>
-    <div class="bar"><i style="width:${mSale + mExp ? Math.min(100, mExp / (mSale + mExp) * 100) : 0}%;background:linear-gradient(90deg,#f87171,#e02424)"></i></div>
-    <div style="margin-top:14px;padding-top:12px;border-top:1px dashed var(--line);display:flex;justify-content:space-between;font-size:14px;font-weight:800">
-      <span>मुनाफ़ा (अनुमानित)</span><span style="color:${mSale - mExp >= 0 ? 'var(--green)' : 'var(--red)'}">${inr(mSale - mExp)}</span>
-    </div>
-  </div>
-
-  <div class="quick">
-    <button class="qbtn" onclick="quickCustomer()"><span>👤</span>ग्राहक</button>
-    <button class="qbtn" onclick="openSaleForm()"><span>🧾</span>बिक्री</button>
-    <button class="qbtn" onclick="openExpenseForm()"><span>💸</span>खर्च</button>
-    <button class="qbtn" onclick="openStockForm()"><span>📦</span>स्टॉक</button>
-  </div>
-
-  ${lowStock ? `<div class="notice" style="background:#fef2f2;border-color:#fecaca;color:#991b1b;margin-top:12px">⚠️ <div><b>${lowStock}</b> आइटम स्टॉक में कम हैं — अभी देखें।</div></div>` : ''}
-
-  <div class="sechead"><h3>हाल के लेनदेन</h3><button class="linkbtn" onclick="go('reports')">रिपोर्ट →</button></div>
-  ${txHtml}
-  `;
+  </div>`;
 }
 
-/* ---------------- PARTY (Customers / Suppliers) ---------------- */
-let searchQ = '';
-function filterParties(v) { searchQ = v; const box = $('#partyListBox'); if (box) box.innerHTML = partyRows(partyKind); }
-function filterStock(v) { searchQ = v; const box = $('#stockListBox'); if (box) box.innerHTML = stockRows(); }
+/* ---------------- PARTY ---------------- */
+function filterParties(v) { searchQ = v; const b = $('#partyBox'); if (b) b.innerHTML = partyRows(partyKind); }
+function filterStock(v) { searchQ = v; const b = $('#stockBox'); if (b) b.innerHTML = stockRows(); }
 
 function partyRows(kind) {
   const d = ud();
   const arr = kind === 'customer' ? d.customers : d.suppliers;
   const list = arr.filter(p => !searchQ || (p.name || '').toLowerCase().includes(searchQ.toLowerCase()) || (p.phone || '').includes(searchQ));
-  if (!list.length) {
-    return `<div class="empty"><span class="big">${kind === 'customer' ? '👥' : '🏭'}</span>${searchQ ? 'कोई परिणाम नहीं मिला' : (kind === 'customer' ? 'अभी कोई ग्राहक नहीं जोड़ा गया।' : 'अभी कोई सप्लायर नहीं जोड़ा गया।')}</div>`;
-  }
+  if (!list.length) return `<div class="empty"><span class="big">${kind === 'customer' ? '👥' : '🏭'}</span>${searchQ ? 'कोई परिणाम नहीं' : 'अभी कोई प्रविष्टि नहीं। ऊपर से जोड़ें।'}</div>`;
   return list.map(p => {
     const b = bal(p);
-    const cls = b === 0 ? 'muted' : (kind === 'customer' ? (b > 0 ? 'red' : 'green') : (b > 0 ? 'red' : 'green'));
-    return `<div class="item" onclick="openParty('${kind}','${p.id}')">
+    const cls = b === 0 ? 'muted' : b > 0 ? 'red' : 'green';
+    const label = b === 0 ? 'बराबर' : b > 0 ? (kind === 'customer' ? 'लेना है' : 'देना है') : (kind === 'customer' ? 'एडवांस' : 'एडवांस दिया');
+    return `<div class="trow" onclick="openParty('${kind}','${p.id}')">
       <div class="av" style="background:${colorFor(p.name)}">${esc(p.name).charAt(0).toUpperCase()}</div>
-      <div style="flex:1;min-width:0">
-        <div class="it-name">${esc(p.name)}</div>
-        <div class="it-sub">${p.phone ? esc(p.phone) : 'नंबर नहीं'} · ${(p.entries || []).length} एंट्री</div>
-      </div>
-      <div class="it-amt ${cls}">${inr(Math.abs(b))}</div>
+      <div class="t-main"><div class="t-n">${esc(p.name)}</div>
+        <div class="t-s">${p.phone ? esc(p.phone) : 'नंबर नहीं'} · ${(p.entries || []).length} एंट्री · ${label}</div></div>
+      <div class="t-a ${cls}">${inr(Math.abs(b))}</div>
     </div>`;
   }).join('');
 }
 
-function partyList(kind) {
-  partyKind = kind;
+function pageParty(kind) {
+  partyKind = kind; searchQ = '';
   const d = ud();
   const arr = kind === 'customer' ? d.customers : d.suppliers;
   const total = arr.reduce((s, p) => s + bal(p), 0);
-  const title = kind === 'customer' ? 'ग्राहक / उधारी' : 'सप्लायर / देना';
+  const isC = kind === 'customer';
   return `
-  <div class="stats" style="grid-template-columns:1fr">
-    <div class="stat ${kind === 'customer' ? 'green' : 'red'}">
-      <div class="lbl">${kind === 'customer' ? '👥 कुल उधारी (आपको लेनी है)' : '🏭 कुल देय (आपको देना है)'}</div>
-      <div class="val">${inr(total)}</div>
+  ${ph(isC ? 'ग्राहक / उधारी' : 'सप्लायर / देय', isC ? 'जिनसे पैसा लेना है' : 'जिनको पैसा देना है',
+    `<button class="btn primary" onclick="openPartyForm('${kind}')">＋ नया ${isC ? 'ग्राहक' : 'सप्लायर'}</button>`)}
+  <div class="kpis" style="grid-template-columns:1fr">
+    <div class="kpi ${isC ? 'g' : 'r'}"><div class="k-l">${isC ? 'कुल उधारी (लेना है)' : 'कुल देय (देना है)'}</div><div class="k-v num">${inr(total)}</div></div>
+  </div>
+  <div class="panel">
+    <div class="panel-h"><span>${isC ? 'ग्राहक सूची' : 'सप्लायर सूची'} (${arr.length})</span></div>
+    <div class="panel-b">
+      <div class="searchrow"><input placeholder="नाम या नंबर से खोजें..." oninput="filterParties(this.value)"></div>
+      <div id="partyBox">${partyRows(kind)}</div>
     </div>
-  </div>
-  <div class="row2" style="margin-bottom:14px">
-    <button class="btn primary" onclick="openPartyForm('${kind}')">＋ नया ${kind === 'customer' ? 'ग्राहक' : 'सप्लायर'}</button>
-    <button class="btn ghost" onclick="go('${kind === 'customer' ? 'customers' : 'suppliers'}');toast('सूची रीफ़्रेश')">🔄 रीफ़्रेश</button>
-  </div>
-  <div class="searchbox"><input placeholder="${title} खोजें..." oninput="filterParties(this.value)" value="${esc(searchQ)}"></div>
-  <div id="partyListBox">${partyRows(kind)}</div>
-  <p class="hint" style="margin-top:16px">किसी भी नाम पर टैप करें → पूरा हिसाब, उधारी, भुगतान और WhatsApp रिमाइंडर।</p>
-  `;
+  </div>`;
 }
-
-function quickCustomer() { openPartyForm('customer'); }
 
 function openPartyForm(kind) {
   const isC = kind === 'customer';
-  modal(isC ? 'नया ग्राहक जोड़ें' : 'नया सप्लायर जोड़ें', `
+  modal(isC ? 'नया ग्राहक' : 'नया सप्लायर', `
     <form onsubmit="return saveParty(event,'${kind}')">
-      <label>नाम *<input id="pName" required placeholder="जैसे: सुरेश कुमार"></label>
+      <label>नाम *<input id="pName" required placeholder="जैसे: सुरेश कुमार" autofocus></label>
       <label>मोबाइल नंबर<input id="pPhone" type="tel" inputmode="numeric" placeholder="10 अंकों का नंबर"></label>
       <label>पुरानी बाकी (शुरुआती रकम)<input id="pOpen" type="number" step="0.01" placeholder="0" value="0"></label>
       <button class="btn primary big" type="submit">सेव करें</button>
-    </form>
-  `);
+    </form>`);
 }
 function saveParty(e, kind) {
   e.preventDefault();
   const d = ud();
-  const p = {
-    id: uid(), name: $('#pName').value.trim(), phone: $('#pPhone').value.trim(),
-    opening: Number($('#pOpen').value) || 0, entries: [], ts: Date.now()
-  };
+  const p = { id: uid(), name: $('#pName').value.trim(), phone: $('#pPhone').value.trim(),
+    opening: Number($('#pOpen').value) || 0, entries: [], ts: Date.now() };
   if (!p.name) return false;
   (kind === 'customer' ? d.customers : d.suppliers).push(p);
   saveDB(); closeModal(); renderApp(); toast('✅ जोड़ दिया गया');
@@ -536,59 +673,54 @@ function openParty(kind, id) {
   const d = ud();
   const arr = kind === 'customer' ? d.customers : d.suppliers;
   const p = arr.find(x => x.id === id); if (!p) return;
-  const b = bal(p);
-  const isC = kind === 'customer';
+  const b = bal(p), isC = kind === 'customer';
   const entries = [...(p.entries || [])].sort((a, x) => (x.ts || 0) - (a.ts || 0));
-  const lblPlus = isC ? 'उधारी दी' : 'खरीद (बिल)';
-  const lblMinus = isC ? 'भुगतान मिला' : 'भुगतान किया';
 
   const rows = entries.length ? entries.map(e => {
     const plus = PLUS[e.type] > 0;
+    const label = e.type === 'udhari' ? 'उधारी दी' : e.type === 'jama' ? 'भुगतान मिला'
+      : e.type === 'kharid' ? 'खरीद (बिल)' : 'भुगतान किया';
     return `<div class="entry">
-      <div>
-        <div class="e-l">${e.type === 'udhari' ? '🟠 ' + lblPlus : e.type === 'jama' ? '🟢 ' + lblMinus : e.type === 'kharid' ? '🟠 ' + lblPlus : '🟢 ' + lblMinus}</div>
-        <div class="e-d">${dmy(e.date)}${e.note ? ' · ' + esc(e.note) : ''}${e.due ? ' · <b>देय ' + dmy(e.due) + '</b>' : ''}</div>
-      </div>
-      <div class="e-a ${plus ? 'plus' : 'minus'}">${plus ? '+' : '−'}${inr(e.amount)}</div>
+      <div><div class="el">${plus ? '🟠' : '🟢'} ${label}</div>
+        <div class="ed">${dmy(e.date)}${e.note ? ' · ' + esc(e.note) : ''}${e.due ? ' · देय ' + dmy(e.due) : ''}</div></div>
+      <div class="ea ${plus ? 'plus' : 'minus'}" style="color:${plus ? 'var(--red)' : 'var(--green)'}">${plus ? '+' : '−'}${inr(e.amount)}</div>
     </div>`;
-  }).join('') : `<div class="empty" style="padding:22px"><span class="big">📄</span>कोई लेनदेन नहीं</div>`;
+  }).join('') : `<div class="empty" style="padding:18px">कोई लेनदेन नहीं</div>`;
 
-  const wa = p.phone ? `<a class="btn green block" style="margin-top:10px;text-decoration:none" target="_blank"
-      href="https://wa.me/91${encodeURIComponent((p.phone || '').replace(/\D/g, '').slice(-10))}?text=${encodeURIComponent(
-        `नमस्ते ${p.name} जी,\n${CU.shop || 'दुकान'} से याद दिला रहे हैं — आपका ₹${Math.abs(b).toLocaleString('en-IN')} बाकी है। कृपया भुगतान कर दें।\nधन्यवाद 🙏`
-      )}">💬 WhatsApp रिमाइंडर भेजें</a>` : '';
+  const wa = p.phone ? `<a class="btn green block" style="margin-top:9px;text-decoration:none" target="_blank"
+    href="https://wa.me/91${encodeURIComponent((p.phone || '').replace(/\D/g, '').slice(-10))}?text=${encodeURIComponent(
+      `नमस्ते ${p.name} जी,\n${CU.shop || 'दुकान'} की ओर से याद दिला रहे हैं — आपका ₹${Math.abs(b).toLocaleString('en-IN')} बाकी है। कृपया भुगतान कर दें।\nधन्यवाद 🙏`
+    )}">💬 WhatsApp रिमाइंडर</a>` : '';
 
   modal(esc(p.name), `
-    <div class="ledger-top">
-      <div class="big-amt">${inr(Math.abs(b))}</div>
-      <div class="lbl">${b > 0 ? (isC ? 'आपको लेना है' : 'आपको देना है') : b < 0 ? (isC ? 'एडवांस जमा है' : 'एडवांस दे दिया') : 'हिसाब बराबर है'}</div>
+    <div class="ledgertop">
+      <div class="big num">${inr(Math.abs(b))}</div>
+      <div class="lb">${b > 0 ? (isC ? 'आपको लेना है' : 'आपको देना है') : b < 0 ? 'एडवांस जमा' : 'हिसाब बराबर'}</div>
     </div>
     <div class="row2">
       <button class="btn primary" onclick="entryForm('${kind}','${id}','${isC ? 'udhari' : 'kharid'}')">${isC ? '＋ उधारी दें' : '＋ खरीद जोड़ें'}</button>
       <button class="btn green" onclick="entryForm('${kind}','${id}','${isC ? 'jama' : 'bhugtan'}')">${isC ? '₹ भुगतान लें' : '₹ भुगतान करें'}</button>
     </div>
     ${wa}
-    <div class="sechead"><h3>लेनदेन (${entries.length})</h3>
-      <button class="linkbtn" style="color:var(--red)" onclick="delParty('${kind}','${id}')">हटाएं</button></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin:16px 0 8px">
+      <b style="font-size:12px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted)">लेनदेन (${entries.length})</b>
+      <button class="btn sm red" onclick="delParty('${kind}','${id}')">हटाएं</button>
+    </div>
     ${rows}
-    <button class="btn ghost block" style="margin-top:14px" onclick="closeModal();renderApp()">बंद करें</button>
-  `);
+    <button class="btn ghost block" style="margin-top:14px" onclick="closeModal();renderApp()">बंद करें</button>`);
 }
 
 function entryForm(kind, id, type) {
-  const isC = kind === 'customer';
-  const titles = { udhari: 'उधारी दें (बाकी बढ़ेगी)', jama: 'भुगतान लें (बाकी घटेगी)', kharid: 'खरीद / बिल जोड़ें', bhugtan: 'सप्लायर को भुगतान करें' };
+  const titles = { udhari: 'उधारी दें', jama: 'भुगतान लें', kharid: 'खरीद / बिल जोड़ें', bhugtan: 'सप्लायर को भुगतान' };
   modal(titles[type] || 'लेनदेन', `
     <form onsubmit="return saveEntry(event,'${kind}','${id}','${type}')">
       <label>रकम (₹) *<input id="eAmt" type="number" step="0.01" min="0.01" required placeholder="0" autofocus></label>
       <label>तारीख<input id="eDate" type="date" value="${today()}"></label>
-      ${type === 'udhari' ? `<label>भुगतान की तारीख (रिमाइंडर के लिए)<input id="eDue" type="date"></label>` : ''}
-      <label>नोट (वैकल्पिक)<input id="eNote" placeholder="जैसे: 2 बोरी चावल"></label>
+      ${type === 'udhari' ? `<label>भुगतान की तारीख (रिमाइंडर हेतु)<input id="eDue" type="date"></label>` : ''}
+      <label>नोट<input id="eNote" placeholder="जैसे: 2 बोरी चावल"></label>
       <button class="btn primary big" type="submit">सेव करें</button>
-    </form>
-  `);
+    </form>`);
 }
-
 function saveEntry(e, kind, id, type) {
   e.preventDefault();
   const d = ud();
@@ -597,14 +729,11 @@ function saveEntry(e, kind, id, type) {
   const amt = Number($('#eAmt').value);
   if (!amt || amt <= 0) { toast('सही रकम डालें'); return false; }
   p.entries = p.entries || [];
-  p.entries.push({
-    id: uid(), type, amount: amt, date: $('#eDate').value || today(),
-    due: $('#eDue') ? ($('#eDue').value || '') : '', note: $('#eNote') ? $('#eNote').value.trim() : '', ts: Date.now()
-  });
+  p.entries.push({ id: uid(), type, amount: amt, date: $('#eDate').value || today(),
+    due: $('#eDue') ? ($('#eDue').value || '') : '', note: $('#eNote').value.trim(), ts: Date.now() });
   saveDB(); closeModal(); renderApp(); toast('✅ सेव हो गया');
   return false;
 }
-
 function delParty(kind, id) {
   if (!confirm('पूरा हिसाब मिट जाएगा। पक्का?')) return;
   const d = ud();
@@ -620,23 +749,21 @@ function pageSales() {
   const tSale = d.sales.filter(s => s.date === today()).reduce((a, b) => a + (+b.amount || 0), 0);
   const mSale = d.sales.filter(s => monthKey(s.date) === monthKey()).reduce((a, b) => a + (+b.amount || 0), 0);
   const rows = list.length ? list.map(s => `
-    <div class="item" style="cursor:default">
-      <div class="av" style="background:#0e9f6e">₹</div>
-      <div style="flex:1;min-width:0">
-        <div class="it-name">${esc(s.note || 'बिक्री')}</div>
-        <div class="it-sub">${dmy(s.date)} · ${s.mode === 'udhari' ? 'उधारी' : 'नकद'}</div>
-      </div>
-      <div class="it-amt green">${inr(s.amount)}</div>
-    </div>`).join('') : `<div class="empty"><span class="big">🧾</span>अभी कोई बिक्री दर्ज नहीं है।</div>`;
+    <div class="trow" style="cursor:default">
+      <div class="av" style="background:#0d7a4f">₹</div>
+      <div class="t-main"><div class="t-n">${esc(s.note || 'बिक्री')}</div>
+        <div class="t-s">${dmy(s.date)} · ${s.mode === 'udhari' ? 'उधारी' : 'नकद'}</div></div>
+      <div class="t-a green">${inr(s.amount)}</div>
+    </div>`).join('') : `<div class="empty"><span class="big">🧾</span>अभी कोई बिक्री दर्ज नहीं।</div>`;
 
   return `
-  <div class="stats">
-    <div class="stat green"><div class="lbl">आज की बिक्री</div><div class="val">${inr(tSale)}</div></div>
-    <div class="stat blue"><div class="lbl">इस महीने</div><div class="val">${inr(mSale)}</div></div>
+  ${ph('बिक्री', 'रोज़ की बिक्री दर्ज करें', `<button class="btn primary" onclick="openSaleForm()">＋ नई बिक्री</button>`)}
+  <div class="kpis" style="grid-template-columns:1fr 1fr">
+    <div class="kpi g"><div class="k-l">आज की बिक्री</div><div class="k-v num">${inr(tSale)}</div></div>
+    <div class="kpi"><div class="k-l">इस महीने</div><div class="k-v num">${inr(mSale)}</div></div>
   </div>
-  <button class="btn primary block" onclick="openSaleForm()" style="margin-bottom:14px">＋ नई बिक्री जोड़ें</button>
-  <div class="sechead"><h3>सभी बिक्री (${list.length})</h3></div>
-  ${rows}`;
+  <div class="panel"><div class="panel-h"><span>सभी बिक्री (${list.length})</span></div>
+    <div class="panel-b flush">${rows}</div></div>`;
 }
 
 function openSaleForm() {
@@ -644,7 +771,7 @@ function openSaleForm() {
   const opts = d.customers.map(c => `<option value="${c.id}">${esc(c.name)}</option>`).join('');
   modal('नई बिक्री', `
     <form onsubmit="return saveSale(event)">
-      <label>रकम (₹) *<input id="sAmt" type="number" step="0.01" min="0.01" required placeholder="0"></label>
+      <label>रकम (₹) *<input id="sAmt" type="number" step="0.01" min="0.01" required placeholder="0" autofocus></label>
       <label>विवरण<input id="sNote" placeholder="जैसे: 2 kg चीनी, 1 पैकेट चाय"></label>
       <label>तारीख<input id="sDate" type="date" value="${today()}"></label>
       <label>भुगतान का तरीका
@@ -654,22 +781,17 @@ function openSaleForm() {
         </select>
       </label>
       <div id="sCustWrap" style="display:none">
-        <label>किस ग्राहक के खाते में?
-          <select id="sCust"><option value="">-- चुनें --</option>${opts}</select>
-        </label>
+        <label>किस ग्राहक के खाते में?<select id="sCust"><option value="">-- चुनें --</option>${opts}</select></label>
       </div>
       <button class="btn primary big" type="submit">बिक्री सेव करें</button>
-    </form>
-  `);
+    </form>`);
 }
-
 function saveSale(e) {
   e.preventDefault();
   const d = ud();
   const amt = Number($('#sAmt').value);
   if (!amt || amt <= 0) { toast('सही रकम डालें'); return false; }
-  const mode = $('#sMode').value;
-  const cid = $('#sCust') ? $('#sCust').value : '';
+  const mode = $('#sMode').value, cid = $('#sCust') ? $('#sCust').value : '';
   d.sales.push({ id: uid(), amount: amt, note: $('#sNote').value.trim(), date: $('#sDate').value || today(), mode, ts: Date.now() });
   if (mode === 'udhari' && cid) {
     const c = d.customers.find(x => x.id === cid);
@@ -685,38 +807,32 @@ function pageExpenses() {
   const list = [...d.expenses].sort((a, b) => (b.ts || 0) - (a.ts || 0));
   const mExp = d.expenses.filter(s => monthKey(s.date) === monthKey()).reduce((a, b) => a + (+b.amount || 0), 0);
   const rows = list.length ? list.map(s => `
-    <div class="item" style="cursor:default">
-      <div class="av" style="background:#e02424">💸</div>
-      <div style="flex:1;min-width:0">
-        <div class="it-name">${esc(s.cat || 'खर्च')}</div>
-        <div class="it-sub">${dmy(s.date)}${s.note ? ' · ' + esc(s.note) : ''}</div>
-      </div>
-      <div class="it-amt red">${inr(s.amount)}</div>
-    </div>`).join('') : `<div class="empty"><span class="big">💸</span>अभी कोई खर्च दर्ज नहीं है।</div>`;
+    <div class="trow" style="cursor:default">
+      <div class="av" style="background:#a31f1f">💸</div>
+      <div class="t-main"><div class="t-n">${esc(s.cat || 'खर्च')}</div>
+        <div class="t-s">${dmy(s.date)}${s.note ? ' · ' + esc(s.note) : ''}</div></div>
+      <div class="t-a red">${inr(s.amount)}</div>
+    </div>`).join('') : `<div class="empty"><span class="big">💸</span>अभी कोई खर्च दर्ज नहीं।</div>`;
   return `
-  <div class="stats" style="grid-template-columns:1fr">
-    <div class="stat red"><div class="lbl">इस महीने का कुल खर्च</div><div class="val">${inr(mExp)}</div></div>
+  ${ph('खर्च', 'दुकान के सारे खर्चे', `<button class="btn primary" onclick="openExpenseForm()">＋ नया खर्च</button>`)}
+  <div class="kpis" style="grid-template-columns:1fr">
+    <div class="kpi r"><div class="k-l">इस महीने का कुल खर्च</div><div class="k-v num">${inr(mExp)}</div></div>
   </div>
-  <button class="btn primary block" onclick="openExpenseForm()" style="margin-bottom:14px">＋ नया खर्च जोड़ें</button>
-  <div class="sechead"><h3>सभी खर्च (${list.length})</h3></div>
-  ${rows}`;
+  <div class="panel"><div class="panel-h"><span>सभी खर्च (${list.length})</span></div>
+    <div class="panel-b flush">${rows}</div></div>`;
 }
-
 function openExpenseForm() {
   modal('नया खर्च', `
     <form onsubmit="return saveExpense(event)">
-      <label>रकम (₹) *<input id="xAmt" type="number" step="0.01" min="0.01" required placeholder="0"></label>
-      <label>श्रेणी
-        <select id="xCat">
-          <option>दुकान का सामान</option><option>किराया</option><option>बिजली/पानी</option>
-          <option>स्टाफ वेतन</option><option>परिवहन</option><option>मोबाइल/इंटरनेट</option><option>अन्य</option>
-        </select>
-      </label>
+      <label>रकम (₹) *<input id="xAmt" type="number" step="0.01" min="0.01" required placeholder="0" autofocus></label>
+      <label>श्रेणी<select id="xCat">
+        <option>दुकान का सामान</option><option>किराया</option><option>बिजली/पानी</option>
+        <option>स्टाफ वेतन</option><option>परिवहन</option><option>मोबाइल/इंटरनेट</option><option>अन्य</option>
+      </select></label>
       <label>तारीख<input id="xDate" type="date" value="${today()}"></label>
       <label>नोट<input id="xNote" placeholder="वैकल्पिक"></label>
       <button class="btn primary big" type="submit">सेव करें</button>
-    </form>
-  `);
+    </form>`);
 }
 function saveExpense(e) {
   e.preventDefault();
@@ -731,16 +847,14 @@ function saveExpense(e) {
 function stockRows() {
   const d = ud();
   const list = d.stock.filter(s => !searchQ || (s.name || '').toLowerCase().includes(searchQ.toLowerCase()));
-  if (!list.length) return `<div class="empty"><span class="big">📦</span>${searchQ ? 'कोई परिणाम नहीं' : 'स्टॉक खाली है। ऊपर से आइटम जोड़ें।'}</div>`;
+  if (!list.length) return `<div class="empty"><span class="big">📦</span>${searchQ ? 'कोई परिणाम नहीं' : 'स्टॉक खाली है।'}</div>`;
   return list.map(s => {
     const low = +s.qty <= +(s.min || 0);
-    return `<div class="item" onclick="openStockForm('${s.id}')">
-      <div class="av" style="background:${low ? '#e02424' : '#0891b2'}">${low ? '⚠️' : '📦'}</div>
-      <div style="flex:1;min-width:0">
-        <div class="it-name">${esc(s.name)}</div>
-        <div class="it-sub">${(+s.qty).toLocaleString('en-IN')} ${esc(s.unit || 'नग')} · बिक्री ${inr(s.sell)}</div>
-      </div>
-      <div class="it-amt ${low ? 'red' : 'muted'}">${inr((+s.qty) * (+s.buy))}</div>
+    return `<div class="trow" onclick="openStockForm('${s.id}')">
+      <div class="av" style="background:${low ? '#a31f1f' : '#1a5f9e'}">${low ? '⚠' : '📦'}</div>
+      <div class="t-main"><div class="t-n">${esc(s.name)}</div>
+        <div class="t-s">${(+s.qty).toLocaleString('en-IN')} ${esc(s.unit || 'नग')} · बिक्री ${inr(s.sell)} · खरीद ${inr(s.buy)}</div></div>
+      <div class="t-a ${low ? 'red' : 'muted'}">${inr((+s.qty) * (+s.buy))}</div>
     </div>`;
   }).join('');
 }
@@ -749,49 +863,48 @@ function pageStock() {
   const val = d.stock.reduce((a, b) => a + (+b.qty || 0) * (+b.buy || 0), 0);
   const low = d.stock.filter(s => +s.qty <= +(s.min || 0)).length;
   return `
-  <div class="stats">
-    <div class="stat blue"><div class="lbl">📦 स्टॉक वैल्यू (खरीद भाव)</div><div class="val">${inr(val)}</div></div>
-    <div class="stat red"><div class="lbl">⚠️ कम स्टॉक वाले आइटम</div><div class="val">${low}</div></div>
+  ${ph('स्टॉक', 'माल की मात्रा और कीमत', `<button class="btn primary" onclick="openStockForm()">＋ नया आइटम</button>`)}
+  <div class="kpis" style="grid-template-columns:1fr 1fr">
+    <div class="kpi"><div class="k-l">स्टॉक वैल्यू (खरीद भाव)</div><div class="k-v num">${inr(val)}</div></div>
+    <div class="kpi r"><div class="k-l">कम स्टॉक आइटम</div><div class="k-v num">${low}</div></div>
   </div>
-  <button class="btn primary block" onclick="openStockForm()" style="margin-bottom:14px">＋ नया आइटम जोड़ें</button>
-  <div class="searchbox"><input placeholder="आइटम खोजें..." oninput="filterStock(this.value)" value="${esc(searchQ)}"></div>
-  <div id="stockListBox">${stockRows()}</div>`;
+  <div class="panel">
+    <div class="panel-h"><span>आइटम सूची (${d.stock.length})</span></div>
+    <div class="panel-b">
+      <div class="searchrow"><input placeholder="आइटम खोजें..." oninput="filterStock(this.value)"></div>
+      <div id="stockBox">${stockRows()}</div>
+    </div>
+  </div>`;
 }
-
 function openStockForm(id) {
   const d = ud();
   const s = id ? d.stock.find(x => x.id === id) : null;
   modal(s ? 'आइटम एडिट करें' : 'नया आइटम', `
     <form onsubmit="return saveStock(event,'${id || ''}')">
-      <label>आइटम का नाम *<input id="kName" required value="${s ? esc(s.name) : ''}" placeholder="जैसे: चीनी"></label>
+      <label>आइटम का नाम *<input id="kName" required value="${s ? esc(s.name) : ''}" placeholder="जैसे: चीनी" autofocus></label>
       <div class="row2">
         <label>मात्रा<input id="kQty" type="number" step="0.01" value="${s ? s.qty : ''}" placeholder="0"></label>
-        <label>इकाई
-          <select id="kUnit">
-            ${['नग', 'kg', 'ग्राम', 'लीटर', 'पैकेट', 'बोरी', 'डिब्बा', 'मीटर'].map(u => `<option ${s && s.unit === u ? 'selected' : ''}>${u}</option>`).join('')}
-          </select>
-        </label>
+        <label>इकाई<select id="kUnit">
+          ${['नग','kg','ग्राम','लीटर','पैकेट','बोरी','डिब्बा','मीटर'].map(u => `<option ${s && s.unit === u ? 'selected' : ''}>${u}</option>`).join('')}
+        </select></label>
       </div>
       <div class="row2">
         <label>खरीद भाव (₹)<input id="kBuy" type="number" step="0.01" value="${s ? s.buy : ''}" placeholder="0"></label>
         <label>बिक्री भाव (₹)<input id="kSell" type="number" step="0.01" value="${s ? s.sell : ''}" placeholder="0"></label>
       </div>
-      <label>कम स्टॉक अलर्ट (इससे नीचे जाने पर चेतावनी)<input id="kMin" type="number" step="0.01" value="${s ? (s.min || 0) : 0}"></label>
+      <label>कम स्टॉक अलर्ट (इससे नीचे पर चेतावनी)<input id="kMin" type="number" step="0.01" value="${s ? (s.min || 0) : 0}"></label>
       <button class="btn primary big" type="submit">सेव करें</button>
-      ${s ? `<button type="button" class="btn red block" style="margin-top:9px" onclick="delStock('${s.id}')">आइटम हटाएं</button>` : ''}
-    </form>
-  `);
+      ${s ? `<button type="button" class="btn red block" style="margin-top:8px" onclick="delStock('${s.id}')">आइटम हटाएं</button>` : ''}
+    </form>`);
 }
 function saveStock(e, id) {
   e.preventDefault();
   const d = ud();
-  const obj = {
-    name: $('#kName').value.trim(), qty: Number($('#kQty').value) || 0, unit: $('#kUnit').value,
-    buy: Number($('#kBuy').value) || 0, sell: Number($('#kSell').value) || 0, min: Number($('#kMin').value) || 0
-  };
+  const obj = { name: $('#kName').value.trim(), qty: Number($('#kQty').value) || 0, unit: $('#kUnit').value,
+    buy: Number($('#kBuy').value) || 0, sell: Number($('#kSell').value) || 0, min: Number($('#kMin').value) || 0 };
   if (!obj.name) return false;
   if (id) { const s = d.stock.find(x => x.id === id); if (s) Object.assign(s, obj); }
-  else { d.stock.push({ id: uid(), ...obj, ts: Date.now() }); }
+  else d.stock.push({ id: uid(), ...obj, ts: Date.now() });
   saveDB(); closeModal(); renderApp(); toast('✅ सेव हो गया');
   return false;
 }
@@ -804,28 +917,24 @@ function delStock(id) {
 /* ---------------- REMINDERS ---------------- */
 function pageReminders() {
   const d = ud();
-  const list = d.customers.map(c => ({ ...c, b: bal(c) })).filter(c => c.b > 0)
-    .sort((a, b) => b.b - a.b);
+  const list = d.customers.map(c => ({ ...c, b: bal(c) })).filter(c => c.b > 0).sort((a, b) => b.b - a.b);
+  const total = list.reduce((s, c) => s + c.b, 0);
   const rows = list.length ? list.map(c => {
     const last = (c.entries || []).slice().sort((a, b) => (b.ts || 0) - (a.ts || 0))[0];
-    const days = last ? Math.floor((Date.now() - (last.ts || Date.now())) / 864e5) : 0;
     const overdue = last && last.due && last.due < today();
-    return `<div class="item" onclick="openParty('customer','${c.id}')">
-      <div class="av" style="background:${overdue ? '#e02424' : colorFor(c.name)}">${esc(c.name).charAt(0).toUpperCase()}</div>
-      <div style="flex:1;min-width:0">
-        <div class="it-name">${esc(c.name)}</div>
-        <div class="it-sub">${overdue ? '🔴 देय तारीख निकल गई (' + dmy(last.due) + ')' : days + ' दिन पहले आखिरी लेनदेन'}</div>
-      </div>
-      <div class="it-amt red">${inr(c.b)}</div>
+    return `<div class="trow" onclick="openParty('customer','${c.id}')">
+      <div class="av" style="background:${overdue ? '#a31f1f' : colorFor(c.name)}">${esc(c.name).charAt(0).toUpperCase()}</div>
+      <div class="t-main"><div class="t-n">${esc(c.name)}</div>
+        <div class="t-s">${overdue ? '🔴 देय तारीख निकल गई (' + dmy(last.due) + ')' : 'बाकी है'}</div></div>
+      <div class="t-a red">${inr(c.b)}</div>
     </div>`;
-  }).join('') : `<div class="empty"><span class="big">✅</span>शाबाश! अभी कोई उधारी बाकी नहीं है।</div>`;
-  const total = list.reduce((s, c) => s + c.b, 0);
+  }).join('') : `<div class="empty"><span class="big">✅</span>शाबाश! कोई उधारी बाकी नहीं।</div>`;
   return `
-  <div class="stats" style="grid-template-columns:1fr">
-    <div class="stat red"><div class="lbl">🔔 कुल रिमाइंडर बाकी</div><div class="val">${inr(total)} · ${list.length} ग्राहक</div></div>
+  ${ph('रिमाइंडर', 'उधारी वाले ग्राहक — टैप कर WhatsApp भेजें')}
+  <div class="kpis" style="grid-template-columns:1fr">
+    <div class="kpi r"><div class="k-l">कुल बाकी</div><div class="k-v num">${inr(total)} · ${list.length} ग्राहक</div></div>
   </div>
-  <div class="sechead"><h3>उधारी वाले ग्राहक</h3><span class="chip">टैप → WhatsApp</span></div>
-  ${rows}`;
+  <div class="panel"><div class="panel-h">उधारी सूची</div><div class="panel-b flush">${rows}</div></div>`;
 }
 
 /* ---------------- REPORTS ---------------- */
@@ -841,42 +950,40 @@ function pageReports() {
   }
   const max = Math.max(1, ...months.map(m => Math.max(m.sale, m.exp)));
   const bars = months.map(m => `
-    <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px">
-      <div style="display:flex;gap:3px;align-items:flex-end;height:96px">
-        <div style="width:13px;border-radius:5px 5px 0 0;background:linear-gradient(180deg,#34d399,#059669);height:${Math.max(3, m.sale / max * 96)}px"></div>
-        <div style="width:13px;border-radius:5px 5px 0 0;background:linear-gradient(180deg,#f87171,#dc2626);height:${Math.max(3, m.exp / max * 96)}px"></div>
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px">
+      <div style="display:flex;gap:2px;align-items:flex-end;height:90px">
+        <div style="width:12px;border-radius:1px 1px 0 0;background:#0d7a4f;height:${Math.max(3, m.sale / max * 90)}px"></div>
+        <div style="width:12px;border-radius:1px 1px 0 0;background:#a31f1f;height:${Math.max(3, m.exp / max * 90)}px"></div>
       </div>
-      <div style="font-size:9.5px;color:var(--muted);font-weight:700">${m.k.slice(5)}/${m.k.slice(2, 4)}</div>
+      <div style="font-size:9.5px;color:var(--muted);font-weight:800">${m.k.slice(5)}/${m.k.slice(2, 4)}</div>
     </div>`).join('');
 
-  const topCust = d.customers.map(c => ({ n: c.name, b: bal(c) })).filter(x => x.b > 0).sort((a, b) => b.b - a.b).slice(0, 5);
-  const topRows = topCust.length ? topCust.map((c, i) => `
-    <div class="entry"><div class="e-l">${i + 1}. ${esc(c.n)}</div><div class="e-a plus">${inr(c.b)}</div></div>`).join('')
-    : `<div class="empty" style="padding:18px">कोई बाकी नहीं</div>`;
+  const top = d.customers.map(c => ({ n: c.name, b: bal(c) })).filter(x => x.b > 0).sort((a, b) => b.b - a.b).slice(0, 5);
+  const topRows = top.length ? top.map((c, i) => `
+    <div class="entry"><div class="el">${i + 1}. ${esc(c.n)}</div><div class="ea" style="color:var(--red)">${inr(c.b)}</div></div>`).join('')
+    : `<div class="empty" style="padding:16px">कोई बाकी नहीं</div>`;
 
-  const pro = isPro();
   return `
-  <div class="card" style="padding:16px;margin-bottom:14px">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
-      <h3 style="font-size:14.5px">पिछले 6 महीने</h3>
-      <div style="font-size:10.5px;font-weight:800;color:var(--muted)">
-        <span style="color:#059669">■ बिक्री</span> &nbsp; <span style="color:#dc2626">■ खर्च</span>
+  ${ph('रिपोर्ट', 'बिक्री, खर्च और मुनाफ़े का विश्लेषण')}
+  <div class="panel">
+    <div class="panel-h"><span>पिछले 6 महीने</span>
+      <span style="font-size:10px;color:var(--muted);letter-spacing:0"><b style="color:#0d7a4f">■ बिक्री</b> &nbsp; <b style="color:#a31f1f">■ खर्च</b></span>
+    </div>
+    <div class="panel-b"><div style="display:flex;gap:8px">${bars}</div></div>
+  </div>
+
+  <div class="grid2">
+    <div class="panel"><div class="panel-h">टॉप 5 उधारी वाले ग्राहक</div><div class="panel-b">${topRows}</div></div>
+    <div class="panel">
+      <div class="panel-h">प्रीमियम रिपोर्ट</div>
+      <div class="panel-b">
+        ${isPro()
+          ? `<p style="font-size:12.3px;color:var(--muted);line-height:1.9">✅ सभी प्रीमियम रिपोर्ट अनलॉक हैं।<br>✅ मासिक मुनाफ़ा, टॉप आइटम, ग्राहक विश्लेषण उपलब्ध।</p>
+             <button class="btn ghost block" style="margin-top:11px" onclick="go('settings')">📤 बैकअप लें</button>`
+          : `<p style="font-size:12.3px;color:var(--muted);line-height:1.9">प्रीमियम में: विस्तृत मुनाफ़ा रिपोर्ट, टॉप आइटम, ग्राहक विश्लेषण और क्लाउड बैकअप।</p>
+             <button class="btn primary block" style="margin-top:11px" onclick="go('premium')">⭐ प्रीमियम लें (₹${DB.settings.prices.basic}/माह से)</button>`}
       </div>
     </div>
-    <div style="display:flex;gap:8px">${bars}</div>
-  </div>
-
-  <div class="card" style="padding:16px;margin-bottom:14px">
-    <h3 style="font-size:14.5px;margin-bottom:10px">🏆 सबसे ज़्यादा उधारी वाले ग्राहक</h3>
-    ${topRows}
-  </div>
-
-  <div class="card" style="padding:16px;position:relative;overflow:hidden">
-    <h3 style="font-size:14.5px;margin-bottom:10px">📈 प्रीमियम रिपोर्ट</h3>
-    ${pro ? `<p style="font-size:13px;color:var(--muted);line-height:1.8">✅ सभी प्रीमियम रिपोर्ट अनलॉक हैं।<br>✅ मासिक मुनाफ़ा/नुकसान, टॉप आइटम, ग्राहक विश्लेषण और बैकअप उपलब्ध है।</p>
-      <button class="btn ghost block" style="margin-top:12px" onclick="go('settings')">📤 बैकअप लें</button>`
-      : `<p style="font-size:13px;color:var(--muted);line-height:1.8">प्रीमियम में मिलेगा: विस्तृत मुनाफ़ा रिपोर्ट, टॉप आइटम, ग्राहक विश्लेषण और क्लाउड बैकअप।</p>
-      <button class="btn primary block" style="margin-top:12px" onclick="go('premium')">⭐ प्रीमियम लें (₹${DB.settings.prices.basic}/माह से)</button>`}
   </div>`;
 }
 
@@ -890,38 +997,33 @@ function pagePremium() {
     { id: 'business', name: 'बिज़नेस', price: p.business, hot: false, feats: ['प्रो की सभी सुविधाएँ', 'मल्टीपल दुकान/स्टाफ', 'बिल प्रिंट व GST रिपोर्ट', 'क्लाउड सिंक', 'डेडिकेटेड सपोर्ट'] }
   ];
   return `
-  ${pro ? `<div class="notice" style="background:#dcfce7;border-color:#86efac;color:#166534">✅ आपका <b>${planName(CU.plan)}</b> प्लान चालू है। ${CU.planExpiry ? 'वैधता: ' + new Date(CU.planExpiry).toLocaleDateString('en-IN') : ''}</div>` : ''}
-  <div style="text-align:center;margin-bottom:18px">
-    <h2 style="font-size:19px;margin-bottom:6px">⭐ प्रीमियम प्लान</h2>
-    <p style="font-size:13px;color:var(--muted);line-height:1.6">मूल सुविधाएँ हमेशा मुफ़्त। ज़्यादा ताकत चाहिए तो प्रीमियम लें।</p>
-  </div>
+  ${ph('प्रीमियम प्लान', 'मूल सुविधाएँ हमेशा मुफ़्त')}
+  ${pro ? `<div class="alert ok">✅ आपका <b>${planName(CU.plan)}</b> प्लान चालू है। ${CU.planExpiry ? 'वैधता: ' + new Date(CU.planExpiry).toLocaleDateString('en-IN') : ''}</div>` : ''}
   ${plans.map(pl => `
     <div class="plan ${pl.hot ? 'hot' : ''}">
-      ${pl.hot ? '<span class="taginline">सबसे लोकप्रिय</span>' : ''}
-      <div class="pname">${pl.name}</div>
-      <div class="price">₹${pl.price}<small> / माह</small></div>
+      ${pl.hot ? '<span class="tag">सबसे लोकप्रिय</span>' : ''}
+      <div class="pn">${pl.name}</div>
+      <div class="pr">₹${pl.price}<small> / माह</small></div>
       <ul>${pl.feats.map(f => `<li>${f}</li>`).join('')}</ul>
       <button class="btn ${pl.hot ? 'primary' : 'ghost'} block" onclick="subscribe('${pl.id}')">
         ${CU.plan === pl.id && pro ? '🔄 रिन्यू करें' : 'चुनें और भुगतान करें'}
       </button>
     </div>`).join('')}
-  <p class="hint">डेमो मोड: भुगतान सिम्युलेट होता है। असली ऐप में UPI / Razorpay जोड़ा जा सकता है।</p>`;
+  <p style="font-size:11px;color:var(--muted);text-align:center;margin-top:8px">डेमो मोड: भुगतान सिम्युलेट होता है। असली ऐप में UPI / Razorpay जोड़ें।</p>`;
 }
-
 function subscribe(planId) {
   const price = DB.settings.prices[planId] || 29;
   modal('भुगतान की पुष्टि', `
-    <div style="text-align:center;padding:8px 0 18px">
-      <div style="font-size:40px">💳</div>
-      <h3 style="font-size:17px;margin:10px 0 4px">${planName(planId)} प्लान</h3>
-      <div style="font-size:26px;font-weight:800;color:var(--primary)">₹${price}</div>
-      <div style="font-size:12px;color:var(--muted);margin-top:4px">30 दिनों के लिए</div>
+    <div style="text-align:center;padding:6px 0 16px">
+      <div style="font-size:36px">💳</div>
+      <h3 style="font-size:16px;margin:9px 0 4px;color:var(--navy)">${planName(planId)} प्लान</h3>
+      <div style="font-size:25px;font-weight:800;color:var(--navy)">₹${price}</div>
+      <div style="font-size:11.5px;color:var(--muted);margin-top:3px">30 दिनों के लिए</div>
     </div>
     <div class="row2">
       <button class="btn ghost" onclick="closeModal()">रद्द करें</button>
       <button class="btn primary" onclick="payNow('${planId}',${price})">भुगतान करें</button>
-    </div>
-  `);
+    </div>`);
 }
 function payNow(planId, price) {
   const u = DB.users.find(x => x.id === CU.id);
@@ -931,79 +1033,62 @@ function payNow(planId, price) {
   saveDB(); closeModal(); renderApp(); toast('🎉 प्रीमियम चालू हो गया!');
 }
 
-/* ---------------- MORE / SETTINGS ---------------- */
-function pageMore() {
-  const d = ud();
-  const items = [
-    { t: '💸 खर्च', s: 'दुकान के सारे खर्चे', p: 'expenses' },
-    { t: '🏭 सप्लायर / देना', s: 'किसको कितना देना है', p: 'suppliers' },
-    { t: '🔔 रिमाइंडर', s: 'उधारी वाले ग्राहक + WhatsApp', p: 'reminders' },
-    { t: '📊 रिपोर्ट', s: 'बिक्री, खर्च और मुनाफ़ा', p: 'reports' },
-    { t: '⭐ प्रीमियम', s: 'प्लान और सुविधाएँ', p: 'premium' },
-    { t: '⚙️ सेटिंग्स व बैकअप', s: 'दुकान की जानकारी, बैकअप', p: 'settings' }
-  ];
-  return `
-  <div class="stats">
-    <div class="stat blue"><div class="lbl">ग्राहक</div><div class="val">${d.customers.length}</div></div>
-    <div class="stat amber"><div class="lbl">सप्लायर</div><div class="val">${d.suppliers.length}</div></div>
-    <div class="stat green"><div class="lbl">कुल बिक्री</div><div class="val">${inr(d.sales.reduce((a, b) => a + (+b.amount || 0), 0))}</div></div>
-    <div class="stat red"><div class="lbl">कुल खर्च</div><div class="val">${inr(d.expenses.reduce((a, b) => a + (+b.amount || 0), 0))}</div></div>
-  </div>
-  ${items.map(i => `<div class="item" onclick="go('${i.p}')">
-      <div style="flex:1"><div class="it-name">${i.t}</div><div class="it-sub">${i.s}</div></div>
-      <div style="color:var(--muted);font-size:17px">›</div></div>`).join('')}
-  <button class="btn red block" style="margin-top:16px" onclick="logout()">⏻ लॉगआउट</button>
-  <p class="hint">दुकानदार v3.0 · डेटा आपके डिवाइस में सुरक्षित है</p>`;
-}
-
+/* ---------------- SETTINGS ---------------- */
 function pageSettings() {
   return `
-  <div class="card" style="padding:16px;margin-bottom:14px">
-    <h3 style="font-size:14.5px;margin-bottom:14px">🏪 दुकान की जानकारी</h3>
-    <form onsubmit="return saveProfile(event)">
-      <label>दुकान का नाम<input id="stShop" value="${esc(CU.shop || '')}"></label>
-      <label>आपका नाम<input id="stName" value="${esc(CU.name || '')}"></label>
-      <label>मोबाइल<input id="stPhone" value="${esc(CU.phone || '')}" type="tel"></label>
-      <label>ईमेल<input value="${esc(CU.email || '')}" disabled style="opacity:.6"></label>
-      <button class="btn primary block" type="submit">सेव करें</button>
-    </form>
-  </div>
-
-  <div class="card" style="padding:16px;margin-bottom:14px">
-    <h3 style="font-size:14.5px;margin-bottom:6px">💾 बैकअप व रीस्टोर</h3>
-    <p style="font-size:12.5px;color:var(--muted);line-height:1.7;margin-bottom:12px">पूरा हिसाब एक फाइल में सेव करें या पुरानी फाइल से वापस लाएँ।</p>
-    <div class="row2">
-      <button class="btn ghost" onclick="exportBackup()">📤 बैकअप लें</button>
-      <button class="btn ghost" onclick="document.getElementById('impFile').click()">📥 रीस्टोर</button>
+  ${ph('सेटिंग्स', 'दुकान की जानकारी, बैकअप व डेटा')}
+  <div class="panel">
+    <div class="panel-h">दुकान की जानकारी</div>
+    <div class="panel-b">
+      <form onsubmit="return saveProfile(event)">
+        <label>दुकान का नाम<input id="stShop" value="${esc(CU.shop || '')}"></label>
+        <div class="row2">
+          <label>आपका नाम<input id="stName" value="${esc(CU.name || '')}"></label>
+          <label>मोबाइल<input id="stPhone" value="${esc(CU.phone || '')}" type="tel"></label>
+        </div>
+        <label>ईमेल<input value="${esc(CU.email || '')}" disabled style="opacity:.55"></label>
+        <button class="btn primary block" type="submit">सेव करें</button>
+      </form>
     </div>
-    <input type="file" id="impFile" accept="application/json" class="hide" onchange="importBackup(this)">
   </div>
 
-  <div class="card" style="padding:16px;margin-bottom:14px">
-    <h3 style="font-size:14.5px;margin-bottom:6px">🧪 डेमो डेटा</h3>
-    <p style="font-size:12.5px;color:var(--muted);line-height:1.7;margin-bottom:12px">ऐप समझने के लिए कुछ नमूना ग्राहक, बिक्री और स्टॉक भरें।</p>
-    <button class="btn ghost block" onclick="seedDemo()">डेमो डेटा भरें</button>
+  <div class="panel">
+    <div class="panel-h">बैकअप व रीस्टोर</div>
+    <div class="panel-b">
+      <p style="font-size:12px;color:var(--muted);line-height:1.8;margin-bottom:11px">पूरा हिसाब एक फाइल में सेव करें या पुरानी फाइल से वापस लाएँ।</p>
+      <div class="row2">
+        <button class="btn ghost" onclick="exportBackup()">📤 बैकअप लें</button>
+        <button class="btn ghost" onclick="document.getElementById('impFile').click()">📥 रीस्टोर</button>
+      </div>
+      <input type="file" id="impFile" accept="application/json" class="hide" onchange="importBackup(this)">
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-h">डेमो डेटा</div>
+    <div class="panel-b">
+      <p style="font-size:12px;color:var(--muted);line-height:1.8;margin-bottom:11px">ऐप समझने के लिए नमूना ग्राहक, बिक्री और स्टॉक भरें।</p>
+      <button class="btn ghost block" onclick="seedDemo()">डेमो डेटा भरें</button>
+    </div>
   </div>
 
   <button class="btn red block" onclick="deleteAccount()">🗑️ अकाउंट डिलीट करें</button>`;
 }
-
 function saveProfile(e) {
   e.preventDefault();
   const u = DB.users.find(x => x.id === CU.id);
   u.shop = $('#stShop').value.trim(); u.name = $('#stName').value.trim(); u.phone = $('#stPhone').value.trim();
-  CU = u; saveDB(); renderApp(); toast('✅ प्रोफ़ाइल सेव हो गई');
+  CU = u; saveDB(); renderApp(); toast('✅ प्रोफ़ाइल सेव');
   return false;
 }
-
 function exportBackup() {
-  const payload = { app: 'dukandar', version: 3, exportedAt: new Date().toISOString(), shop: CU.shop, data: ud() };
+  const payload = { app: 'khatasathi', version: 1, exportedAt: new Date().toISOString(), shop: CU.shop, data: ud() };
   const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = 'dukandar-backup-' + today() + '.json';
+  a.download = 'khatasathi-backup-' + today() + '.json';
   a.click(); URL.revokeObjectURL(a.href);
-  toast('📤 बैकअप फाइल डाउनलोड हो गई');
+  toast('📤 बैकअप डाउनलोड हो गया');
 }
 function importBackup(input) {
   const f = input.files[0]; if (!f) return;
@@ -1015,19 +1100,19 @@ function importBackup(input) {
       DB.data[CU.id] = obj.data; saveDB(); renderApp(); toast('✅ रीस्टोर सफल');
     } catch (e) { toast('❌ गलत बैकअप फाइल'); }
   };
-  r.readAsText(f);
-  input.value = '';
+  r.readAsText(f); input.value = '';
 }
 function seedDemo() {
   const d = ud();
-  if (d.customers.length) { if (!confirm('मौजूदा डेटा के साथ डेमो जोड़ा जाएगा। जारी रखें?')) return; }
-  const names = [['सुरेश कुमार', '9876543210', 1200], ['रीना देवी', '9812345678', 450], ['अमित सिंह', '9988776655', 0], ['मोहन लाल', '9765432109', 2500]];
-  names.forEach(([n, ph, b]) => {
-    const c = { id: uid(), name: n, phone: ph, opening: b, entries: [], ts: Date.now() };
+  if (d.customers.length && !confirm('मौजूदा डेटा के साथ डेमो जोड़ा जाएगा। जारी रखें?')) return;
+  [['सुरेश कुमार','9876543210',1200],['रीना देवी','9812345678',450],['अमित सिंह','9988776655',0],['मोहन लाल','9765432109',2500]]
+  .forEach(([n, ph, b]) => {
+    const c = { id: uid(), name: n, phone: ph, opening: 0, entries: [], ts: Date.now() };
     if (b > 0) c.entries.push({ id: uid(), type: 'udhari', amount: b, date: today(), note: 'पुरानी बाकी', ts: Date.now() });
     d.customers.push(c);
   });
-  d.suppliers.push({ id: uid(), name: 'अग्रवाल होलसेल', phone: '9911223344', opening: 8000, entries: [{ id: uid(), type: 'kharid', amount: 8000, date: today(), note: 'माल खरीदा', ts: Date.now() }], ts: Date.now() });
+  d.suppliers.push({ id: uid(), name: 'अग्रवाल होलसेल', phone: '9911223344', opening: 0,
+    entries: [{ id: uid(), type: 'kharid', amount: 8000, date: today(), note: 'माल खरीदा', ts: Date.now() }], ts: Date.now() });
   d.sales.push({ id: uid(), amount: 2450, note: 'आटा, चावल, तेल', date: today(), mode: 'cash', ts: Date.now() });
   d.sales.push({ id: uid(), amount: 760, note: 'दूध, ब्रेड', date: today(), mode: 'cash', ts: Date.now() });
   d.expenses.push({ id: uid(), amount: 500, cat: 'परिवहन', date: today(), note: 'माल ढुलाई', ts: Date.now() });
@@ -1042,7 +1127,6 @@ function deleteAccount() {
   delete DB.data[CU.id];
   DB.session = null; saveDB(); CU = null; show('#authScreen'); toast('अकाउंट डिलीट हो गया');
 }
-
 function go(p) { page = p; renderApp(); }
 
 /* =========================================================
@@ -1066,80 +1150,77 @@ function adminDash() {
   const revenue = DB.payments.reduce((s, p) => s + (+p.amount || 0), 0);
   const mRev = DB.payments.filter(p => monthKey(p.date) === monthKey()).reduce((s, p) => s + (+p.amount || 0), 0);
   const active = users.filter(u => !u.blocked).length;
-  const recent = [...DB.users].filter(u => u.role !== 'admin').sort((a, b) => b.createdAt - a.createdAt).slice(0, 5);
-
+  const recent = [...users].sort((a, b) => b.createdAt - a.createdAt).slice(0, 5);
   const rows = recent.length ? recent.map(u => `
-    <div class="item" style="cursor:default">
+    <div class="trow" style="cursor:default">
       <div class="av" style="background:${colorFor(u.shop)}">${esc(u.shop || 'S').charAt(0)}</div>
-      <div style="flex:1;min-width:0">
-        <div class="it-name">${esc(u.shop)}</div>
-        <div class="it-sub">${esc(u.email)} · ${new Date(u.createdAt).toLocaleDateString('en-IN')}</div>
-      </div>
+      <div class="t-main"><div class="t-n">${esc(u.shop)}</div>
+        <div class="t-s">${esc(u.email)} · ${new Date(u.createdAt).toLocaleDateString('en-IN')}</div></div>
       <span class="pill ${isPro(u) ? 'pro' : 'free'}">${isPro(u) ? 'PRO' : 'FREE'}</span>
-    </div>`).join('') : `<div class="empty">अभी कोई दुकानदार रजिस्टर नहीं है।</div>`;
+    </div>`).join('') : `<div class="empty">कोई दुकानदार रजिस्टर नहीं।</div>`;
 
   return `
-  <div class="stats">
-    <div class="stat blue"><div class="lbl">🏪 कुल दुकानदार</div><div class="val">${users.length}</div></div>
-    <div class="stat green"><div class="lbl">⭐ प्रीमियम यूज़र्स</div><div class="val">${proCount}</div></div>
-    <div class="stat amber"><div class="lbl">💰 कुल कमाई</div><div class="val">${inr(revenue)}</div></div>
-    <div class="stat red"><div class="lbl">📅 इस महीने</div><div class="val">${inr(mRev)}</div></div>
+  <div class="kpis">
+    <div class="kpi"><div class="k-l">कुल दुकानदार</div><div class="k-v num">${users.length}</div></div>
+    <div class="kpi g"><div class="k-l">प्रीमियम यूज़र्स</div><div class="k-v num">${proCount}</div></div>
+    <div class="kpi a"><div class="k-l">कुल कमाई</div><div class="k-v num">${inr(revenue)}</div></div>
+    <div class="kpi r"><div class="k-l">इस महीने</div><div class="k-v num">${inr(mRev)}</div></div>
   </div>
-  <div class="card" style="padding:16px;margin-bottom:14px">
-    <div style="display:flex;justify-content:space-between;font-size:12.5px;font-weight:800;color:var(--muted)">
-      <span>एक्टिव अकाउंट</span><span style="color:var(--green)">${active}/${users.length}</span>
+
+  <div class="panel">
+    <div class="panel-h">स्वास्थ्य</div>
+    <div class="panel-b">
+      <div class="mini" style="margin-top:0"><span>एक्टिव अकाउंट</span><b>${active}/${users.length}</b></div>
+      <div class="bar"><i style="width:${users.length ? active / users.length * 100 : 0}%"></i></div>
+      <div class="mini"><span>कन्वर्ज़न (फ्री → प्रीमियम)</span><b>${users.length ? Math.round(proCount / users.length * 100) : 0}%</b></div>
+      <div class="bar"><i style="width:${users.length ? proCount / users.length * 100 : 0}%;background:linear-gradient(90deg,#34a06e,#0d7a4f)"></i></div>
     </div>
-    <div class="bar"><i style="width:${users.length ? active / users.length * 100 : 0}%"></i></div>
-    <div style="display:flex;justify-content:space-between;font-size:12.5px;font-weight:800;color:var(--muted);margin-top:12px">
-      <span>कन्वर्ज़न (फ्री → प्रीमियम)</span><span style="color:var(--primary)">${users.length ? Math.round(proCount / users.length * 100) : 0}%</span>
-    </div>
-    <div class="bar"><i style="width:${users.length ? proCount / users.length * 100 : 0}%;background:linear-gradient(90deg,#34d399,#059669)"></i></div>
   </div>
-  <div class="sechead"><h3>नए रजिस्ट्रेशन</h3><button class="linkbtn" onclick="atab='users';renderAdmin()">सभी →</button></div>
-  ${rows}`;
+
+  <div class="panel">
+    <div class="panel-h"><span>नए रजिस्ट्रेशन</span><button class="btn sm ghost" onclick="atab='users';renderAdmin()">सभी →</button></div>
+    <div class="panel-b flush">${rows}</div>
+  </div>`;
 }
 
 function adminUsers() {
   const users = DB.users.filter(u => u.role !== 'admin');
   const rows = users.length ? users.map(u => `
     <tr>
-      <td><b>${esc(u.shop)}</b><br><span style="color:var(--muted);font-size:11px">${esc(u.name || '')}</span></td>
-      <td>${esc(u.email)}<br><span style="color:var(--muted);font-size:11px">${esc(u.phone || '—')}</span></td>
+      <td><b>${esc(u.shop)}</b><br><span style="color:var(--muted);font-size:10.5px">${esc(u.name || '')}</span></td>
+      <td>${esc(u.email)}<br><span style="color:var(--muted);font-size:10.5px">${esc(u.phone || '—')}</span></td>
       <td><span class="pill ${isPro(u) ? 'pro' : 'free'}">${isPro(u) ? planName(u.plan) : 'फ्री'}</span></td>
       <td>${u.planExpiry ? new Date(u.planExpiry).toLocaleDateString('en-IN') : '—'}</td>
       <td>${u.blocked ? '<span class="pill blocked">ब्लॉक</span>' : '✅'}</td>
       <td>
         <button class="btn sm ghost" onclick="adminToggleBlock('${u.id}')">${u.blocked ? 'अनब्लॉक' : 'ब्लॉक'}</button>
-        <button class="btn sm amber" onclick="adminMakePro('${u.id}')">PRO दें</button>
+        <button class="btn sm amber" onclick="adminMakePro('${u.id}')">PRO</button>
         <button class="btn sm red" onclick="adminDelUser('${u.id}')">हटाएं</button>
       </td>
-    </tr>`).join('') : `<tr><td colspan="6" style="text-align:center;padding:30px;color:var(--muted)">कोई यूज़र नहीं</td></tr>`;
+    </tr>`).join('') : `<tr><td colspan="6" style="text-align:center;padding:26px;color:var(--muted)">कोई यूज़र नहीं</td></tr>`;
   return `
-  <div class="card" style="padding:14px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center">
-    <div style="font-size:13px;font-weight:800">कुल यूज़र्स: ${users.length}</div>
+  <div class="panel" style="padding:10px 13px;display:flex;justify-content:space-between;align-items:center">
+    <b style="font-size:12px">कुल यूज़र्स: ${users.length}</b>
     <button class="btn sm ghost" onclick="renderAdmin()">🔄 रीफ़्रेश</button>
   </div>
   <div class="tablewrap"><table>
     <thead><tr><th>दुकान</th><th>संपर्क</th><th>प्लान</th><th>वैधता</th><th>स्थिति</th><th>एक्शन</th></tr></thead>
     <tbody>${rows}</tbody>
-  </table></div>
-  <p class="hint">एडमिन के पास पूरा कंट्रोल है — ब्लॉक, प्रीमियम देना और डिलीट करना।</p>`;
+  </table></div>`;
 }
-
 function adminToggleBlock(id) {
   const u = DB.users.find(x => x.id === id); if (!u) return;
-  u.blocked = !u.blocked; saveDB(); renderAdmin(); toast(u.blocked ? '🚫 ब्लॉक कर दिया' : '✅ अनब्लॉक हो गया');
+  u.blocked = !u.blocked; saveDB(); renderAdmin(); toast(u.blocked ? '🚫 ब्लॉक कर दिया' : '✅ अनब्लॉक');
 }
 function adminMakePro(id) {
   const u = DB.users.find(x => x.id === id); if (!u) return;
   u.plan = 'pro'; u.planExpiry = Date.now() + 30 * 864e5;
   DB.payments.push({ id: uid(), userId: u.id, shop: u.shop, plan: 'pro', amount: 0, date: new Date().toISOString(), ts: Date.now(), note: 'एडमिन द्वारा' });
-  saveDB(); renderAdmin(); toast('⭐ प्रो एक्टिवेट हो गया');
+  saveDB(); renderAdmin(); toast('⭐ प्रो एक्टिवेट');
 }
 function adminDelUser(id) {
   if (!confirm('यूज़र और उसका पूरा डेटा डिलीट करें?')) return;
-  DB.users = DB.users.filter(u => u.id !== id);
-  delete DB.data[id];
+  DB.users = DB.users.filter(u => u.id !== id); delete DB.data[id];
   saveDB(); renderAdmin(); toast('🗑️ डिलीट हो गया');
 }
 
@@ -1153,11 +1234,11 @@ function adminPayments() {
       <td>${planName(p.plan)}</td>
       <td><b>${inr(p.amount)}</b></td>
       <td>${esc(p.note || 'UPI / ऑनलाइन')}</td>
-    </tr>`).join('') : `<tr><td colspan="5" style="text-align:center;padding:30px;color:var(--muted)">अभी कोई भुगतान नहीं</td></tr>`;
+    </tr>`).join('') : `<tr><td colspan="5" style="text-align:center;padding:26px;color:var(--muted)">कोई भुगतान नहीं</td></tr>`;
   return `
-  <div class="stats" style="grid-template-columns:1fr 1fr">
-    <div class="stat green"><div class="lbl">कुल कमाई</div><div class="val">${inr(total)}</div></div>
-    <div class="stat blue"><div class="lbl">कुल ट्रांजैक्शन</div><div class="val">${list.length}</div></div>
+  <div class="kpis" style="grid-template-columns:1fr 1fr">
+    <div class="kpi g"><div class="k-l">कुल कमाई</div><div class="k-v num">${inr(total)}</div></div>
+    <div class="kpi"><div class="k-l">कुल ट्रांजैक्शन</div><div class="k-v num">${list.length}</div></div>
   </div>
   <div class="tablewrap"><table>
     <thead><tr><th>तारीख</th><th>दुकान</th><th>प्लान</th><th>रकम</th><th>माध्यम</th></tr></thead>
@@ -1168,57 +1249,61 @@ function adminPayments() {
 function adminSettings() {
   const s = DB.settings;
   return `
-  <div class="card" style="padding:16px;margin-bottom:14px">
-    <h3 style="font-size:14.5px;margin-bottom:14px">💰 प्लान की कीमतें (₹/माह)</h3>
-    <form onsubmit="return savePrices(event)">
-      <div class="row2">
-        <label>बेसिक<input id="prBasic" type="number" value="${s.prices.basic}"></label>
-        <label>प्रो<input id="prPro" type="number" value="${s.prices.pro}"></label>
-      </div>
-      <label>बिज़नेस<input id="prBiz" type="number" value="${s.prices.business}"></label>
-      <button class="btn primary block" type="submit">कीमतें सेव करें</button>
-    </form>
+  <div class="panel">
+    <div class="panel-h">प्लान की कीमतें (₹/माह)</div>
+    <div class="panel-b">
+      <form onsubmit="return savePrices(event)">
+        <div class="row2">
+          <label>बेसिक<input id="prBasic" type="number" value="${s.prices.basic}"></label>
+          <label>प्रो<input id="prPro" type="number" value="${s.prices.pro}"></label>
+        </div>
+        <label>बिज़नेस<input id="prBiz" type="number" value="${s.prices.business}"></label>
+        <button class="btn primary block" type="submit">कीमतें सेव करें</button>
+      </form>
+    </div>
   </div>
 
-  <div class="card" style="padding:16px;margin-bottom:14px">
-    <h3 style="font-size:14.5px;margin-bottom:14px">📢 विज्ञापन व नोटिस</h3>
-    <form onsubmit="return saveAdminSettings(event)">
-      <label>विज्ञापन दिखाएँ (फ्री यूज़र्स को)
-        <select id="adToggle">
-          <option value="1" ${s.ads ? 'selected' : ''}>हाँ — चालू</option>
-          <option value="0" ${!s.ads ? 'selected' : ''}>नहीं — बंद</option>
-        </select>
-      </label>
-      <label>सभी दुकानदारों के लिए नोटिस
-        <textarea id="adNotice" placeholder="जैसे: 15 अगस्त पर ऐप में नई फीचर आ रही है!">${esc(s.notice || '')}</textarea>
-      </label>
-      <button class="btn primary block" type="submit">सेव करें</button>
-    </form>
+  <div class="panel">
+    <div class="panel-h">विज्ञापन व नोटिस</div>
+    <div class="panel-b">
+      <form onsubmit="return saveAdminSettings(event)">
+        <label>विज्ञापन दिखाएँ (फ्री यूज़र्स को)
+          <select id="adToggle">
+            <option value="1" ${s.ads ? 'selected' : ''}>हाँ — चालू</option>
+            <option value="0" ${!s.ads ? 'selected' : ''}>नहीं — बंद</option>
+          </select>
+        </label>
+        <label>सभी दुकानदारों के लिए नोटिस
+          <textarea id="adNotice" placeholder="जैसे: नई सुविधा आ रही है!">${esc(s.notice || '')}</textarea>
+        </label>
+        <button class="btn primary block" type="submit">सेव करें</button>
+      </form>
+    </div>
   </div>
 
-  <div class="card" style="padding:16px;margin-bottom:14px">
-    <h3 style="font-size:14.5px;margin-bottom:6px">🛡️ एडमिन क्रेडेंशियल</h3>
-    <p style="font-size:12.5px;color:var(--muted);line-height:1.8">
-      ईमेल: <b>${esc(ADMIN_EMAIL)}</b><br>
-      पासवर्ड: <b>सुरक्षित</b> (कोड में सेट)<br>
-      रोल: <b>सुपर एडमिन — फुल कंट्रोल</b>
-    </p>
+  <div class="panel">
+    <div class="panel-h">एडमिन क्रेडेंशियल</div>
+    <div class="panel-b">
+      <div class="mini" style="margin-top:0"><span>ईमेल</span><b>${esc(ADMIN_EMAIL)}</b></div>
+      <div class="mini"><span>पासवर्ड</span><b>सुरक्षित (कोड में सेट)</b></div>
+      <div class="mini"><span>रोल</span><b>सुपर एडमिन — फुल कंट्रोल</b></div>
+    </div>
   </div>
 
-  <div class="card" style="padding:16px">
-    <h3 style="font-size:14.5px;margin-bottom:6px">🗄️ डेटाबेस</h3>
-    <p style="font-size:12.5px;color:var(--muted);line-height:1.8;margin-bottom:12px">
-      कुल यूज़र्स: <b>${DB.users.length}</b> · भुगतान रिकॉर्ड: <b>${DB.payments.length}</b>
-    </p>
-    <button class="btn ghost block" style="margin-bottom:9px" onclick="adminExport()">📤 पूरा डेटा एक्सपोर्ट</button>
-    <button class="btn red block" onclick="adminReset()">⚠️ सारा डेटा रीसेट करें</button>
+  <div class="panel">
+    <div class="panel-h">डेटाबेस</div>
+    <div class="panel-b">
+      <div class="mini" style="margin-top:0"><span>कुल यूज़र्स</span><b>${DB.users.length}</b></div>
+      <div class="mini"><span>भुगतान रिकॉर्ड</span><b>${DB.payments.length}</b></div>
+      <button class="btn ghost block" style="margin-top:12px" onclick="adminExport()">📤 पूरा डेटा एक्सपोर्ट</button>
+      <button class="btn red block" style="margin-top:8px" onclick="adminReset()">⚠️ सारा डेटा रीसेट करें</button>
+    </div>
   </div>`;
 }
-
 function savePrices(e) {
   e.preventDefault();
   DB.settings.prices = { basic: +$('#prBasic').value || 29, pro: +$('#prPro').value || 59, business: +$('#prBiz').value || 99 };
-  saveDB(); renderAdmin(); toast('✅ कीमतें सेव हो गईं');
+  saveDB(); renderAdmin(); toast('✅ कीमतें सेव');
   return false;
 }
 function saveAdminSettings(e) {
@@ -1232,13 +1317,13 @@ function adminExport() {
   const blob = new Blob([JSON.stringify(DB, null, 2)], { type: 'application/json' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = 'dukandar-admin-backup-' + today() + '.json';
+  a.download = 'khatasathi-admin-' + today() + '.json';
   a.click(); URL.revokeObjectURL(a.href);
   toast('📤 एक्सपोर्ट हो गया');
 }
 function adminReset() {
-  if (!confirm('सारा डेटा (यूज़र्स, हिसाब, भुगतान) मिट जाएगा। पक्का?')) return;
-  DB = defaultDB(); saveDB(); toast('🔄 रीसेट हो गया'); renderAdmin();
+  if (!confirm('सारा डेटा मिट जाएगा। पक्का?')) return;
+  DB = defaultDB(); saveDB(); renderAdmin(); toast('🔄 रीसेट हो गया');
 }
 
 /* =========================================================
@@ -1256,6 +1341,160 @@ function modal(title, html) {
   setTimeout(() => { const i = $('.sheetbody input'); if (i) i.focus(); }, 60);
 }
 function closeModal() { $('#modalRoot').innerHTML = ''; document.body.style.overflow = ''; }
+
+/* =========================================================
+   🤖 CHATBOT — खाता साथी AI सहायक
+   ========================================================= */
+const CHIPS = ['कुल उधारी?', 'आज की बिक्री?', 'स्टॉक?', 'ग्राहक कैसे जोड़ें?', 'बैकअप?', 'प्रीमियम?'];
+
+function initChat() {
+  $('#chatChips').innerHTML = CHIPS.map(c => `<button class="chip" onclick="quickAsk('${c.replace(/'/g, "\\'")}')">${c}</button>`).join('');
+  if (!$('#chatMsgs').dataset.init) {
+    $('#chatMsgs').dataset.init = '1';
+    botSay(`नमस्ते ${CU.name || ''}! 👋<br>मैं <b>खाता साथी सहायक</b> हूँ।<br><br>आप मुझसे पूछ सकते हैं:<br>• <b>कुल उधारी?</b><br>• <b>आज की बिक्री?</b><br>• <b>स्टॉक?</b><br>• <b>सुरेश का बाकी?</b><br>• <b>ग्राहक कैसे जोड़ें?</b>`);
+  }
+}
+
+function toggleChat() {
+  const p = $('#chatPanel');
+  p.classList.toggle('hide');
+  if (!p.classList.contains('hide')) { setTimeout(() => $('#chatInput').focus(), 80); scrollChat(); }
+}
+function scrollChat() { const m = $('#chatMsgs'); if (m) m.scrollTop = m.scrollHeight; }
+
+function botSay(html) {
+  const m = $('#chatMsgs');
+  const d = document.createElement('div');
+  d.className = 'msg bot'; d.innerHTML = html;
+  m.appendChild(d); scrollChat();
+}
+function userSay(text) {
+  const m = $('#chatMsgs');
+  const d = document.createElement('div');
+  d.className = 'msg user'; d.textContent = text;
+  m.appendChild(d); scrollChat();
+}
+function quickAsk(t) {
+  $('#chatInput').value = t;
+  sendChat(new Event('submit'));
+}
+function sendChat(e) {
+  if (e && e.preventDefault) e.preventDefault();
+  const inp = $('#chatInput');
+  const q = (inp.value || '').trim();
+  if (!q) return false;
+  userSay(q); inp.value = '';
+  setTimeout(() => botSay(botReply(q)), 260);
+  return false;
+}
+
+/* ---- Rule engine ---- */
+function botReply(qRaw) {
+  const t = qRaw.toLowerCase().trim();
+  const d = ud();
+
+  const custBal = d.customers.reduce((s, c) => s + bal(c), 0);
+  const supBal  = d.suppliers.reduce((s, c) => s + bal(c), 0);
+  const todaySale = d.sales.filter(s => s.date === today()).reduce((a, b) => a + (+b.amount || 0), 0);
+  const mSale = d.sales.filter(s => monthKey(s.date) === monthKey()).reduce((a, b) => a + (+b.amount || 0), 0);
+  const mExp  = d.expenses.filter(s => monthKey(s.date) === monthKey()).reduce((a, b) => a + (+b.amount || 0), 0);
+  const stockVal = d.stock.reduce((a, b) => a + (+b.qty || 0) * (+b.buy || 0), 0);
+  const low = d.stock.filter(s => +s.qty <= +(s.min || 0));
+
+  /* ---- Greeting ---- */
+  if (/^(hi|hello|hey|hii|namaste|नमस्ते|हाय|हैलो|सलाम)/.test(t))
+    return `नमस्ते! 🙏 मैं आपका <b>हिसाब सहायक</b> हूँ।<br><br>पूछें: <b>कुल उधारी</b>, <b>आज की बिक्री</b>, <b>स्टॉक</b>, या <b>किसी ग्राहक का नाम</b>।`;
+
+  if (/(धन्यवाद|thank|शुक्रिया|thanks)/.test(t))
+    return `आपका स्वागत है! 😊 कुछ और पूछना हो तो बताइए।`;
+
+  /* ---- Data: उधारी ---- */
+  if (/(उधारी|उधार|udhari|udhaar|lena|लेना|बाकी|baki|outstanding)/.test(t)) {
+    const top = [...d.customers].map(c => ({ n: c.name, b: bal(c) })).filter(x => x.b > 0).sort((a, b) => b.b - a.b).slice(0, 3);
+    let s = `💰 <b>कुल उधारी (लेना है): ${inr(custBal)}</b><br>ग्राहकों की संख्या: ${d.customers.filter(c => bal(c) > 0).length}<br>`;
+    if (top.length) s += `<br><b>सबसे ज़्यादा बाकी:</b><br>` + top.map((c, i) => `${i + 1}. ${esc(c.n)} — ${inr(c.b)}`).join('<br>');
+    return s;
+  }
+
+  /* ---- Data: देना है ---- */
+  if (/(देना|dena|सप्लायर|supplier|payable)/.test(t))
+    return `🏭 <b>सप्लायर को देना है: ${inr(supBal)}</b><br>कुल सप्लायर: ${d.suppliers.length}`;
+
+  /* ---- Data: बिक्री ---- */
+  if (/(आज|today).*(बिक्री|sale|bikri)/.test(t) || /(बिक्री|sale|bikri).*(आज|today)/.test(t))
+    return `🧾 <b>आज की बिक्री: ${inr(todaySale)}</b><br>आज के लेनदेन: ${d.sales.filter(s => s.date === today()).length}`;
+
+  if (/(बिक्री|sale|bikri)/.test(t))
+    return `🧾 <b>इस महीने की बिक्री: ${inr(mSale)}</b><br>कुल बिक्री रिकॉर्ड: ${d.sales.length}<br>आज: ${inr(todaySale)}`;
+
+  /* ---- Data: खर्च / मुनाफा ---- */
+  if (/(खर्च|expense|kharcha)/.test(t))
+    return `💸 <b>इस महीने का खर्च: ${inr(mExp)}</b><br>कुल खर्च रिकॉर्ड: ${d.expenses.length}`;
+
+  if (/(मुनाफ|munafa|profit|लाभ|कमाई)/.test(t)) {
+    const p = mSale - mExp;
+    return `📊 <b>इस महीने का मुनाफ़ा (अनुमानित): ${inr(p)}</b><br>बिक्री: ${inr(mSale)}<br>खर्च: ${inr(mExp)}<br><br>${p >= 0 ? '✅ अच्छा चल रहा है!' : '⚠️ खर्च बिक्री से ज़्यादा है।'}`;
+  }
+
+  /* ---- Data: स्टॉक ---- */
+  if (/(स्टॉक|stock|माल|inventory)/.test(t)) {
+    let s = `📦 <b>स्टॉक वैल्यू: ${inr(stockVal)}</b><br>कुल आइटम: ${d.stock.length}<br>`;
+    if (low.length) s += `<br>⚠️ <b>कम स्टॉक (${low.length}):</b><br>` + low.slice(0, 5).map(x => `• ${esc(x.name)} — ${x.qty} ${esc(x.unit || '')}`).join('<br>');
+    else s += `<br>✅ सभी आइटम पर्याप्त हैं।`;
+    return s;
+  }
+
+  /* ---- Data: ग्राहक खोज ---- */
+  const foundCust = d.customers.find(c => c.name && t.includes(c.name.toLowerCase()));
+  if (foundCust) {
+    const b = bal(foundCust);
+    return `👤 <b>${esc(foundCust.name)}</b><br>बाकी: <b>${inr(Math.abs(b))}</b> ${b > 0 ? '(लेना है)' : b < 0 ? '(एडवांस)' : '(बराबर)'}<br>कुल एंट्री: ${(foundCust.entries || []).length}<br>मोबाइल: ${esc(foundCust.phone || '—')}<br><br>पूरा हिसाब देखने के लिए <b>ग्राहक / उधारी</b> पेज खोलें।`;
+  }
+
+  /* ---- Data: सप्लायर खोज ---- */
+  const foundSup = d.suppliers.find(c => c.name && t.includes(c.name.toLowerCase()));
+  if (foundSup) {
+    const b = bal(foundSup);
+    return `🏭 <b>${esc(foundSup.name)}</b><br>देना है: <b>${inr(Math.abs(b))}</b><br>कुल एंट्री: ${(foundSup.entries || []).length}`;
+  }
+
+  /* ---- How-to: ग्राहक जोड़ना ---- */
+  if (/(ग्राहक|ग्राहकों|customer).*(जोड़|add|नया|कैसे)/.test(t))
+    return `👥 <b>ग्राहक जोड़ने का तरीका:</b><br>1. बाएँ मेन्यू से <b>ग्राहक / उधारी</b> खोलें<br>2. ऊपर <b>＋ नया ग्राहक</b> बटन दबाएँ<br>3. नाम, मोबाइल, पुरानी बाकी भरें<br>4. <b>सेव करें</b> दबाएँ<br><br>फिर उस ग्राहक पर टैप करके उधारी/भुगतान जोड़ सकते हैं।`;
+
+  /* ---- How-to: बिक्री ---- */
+  if (/(बिक्री|sale).*(जोड़|add|कैसे|दर्ज)/.test(t))
+    return `🧾 <b>बिक्री जोड़ने का तरीका:</b><br>1. मेन्यू से <b>बिक्री</b> खोलें<br>2. <b>＋ नई बिक्री</b> दबाएँ<br>3. रकम व विवरण भरें<br>4. भुगतान तरीका चुनें: <b>नकद</b> या <b>उधारी</b><br><br>उधारी चुनने पर ग्राहक का खाता अपने आप अपडेट हो जाएगा।`;
+
+  /* ---- How-to: खर्च ---- */
+  if (/(खर्च|expense).*(जोड़|add|कैसे|दर्ज)/.test(t))
+    return `💸 <b>खर्च जोड़ें:</b><br>मेन्यू → <b>खर्च</b> → <b>＋ नया खर्च</b><br>रकम, श्रेणी और तारीख भरें।<br><br>इससे मुनाफ़े की सही गणना होती है।`;
+
+  /* ---- How-to: स्टॉक ---- */
+  if (/(स्टॉक|stock).*(जोड़|add|कैसे)/.test(t))
+    return `📦 <b>स्टॉक जोड़ें:</b><br>मेन्यू → <b>स्टॉक</b> → <b>＋ नया आइटम</b><br>नाम, मात्रा, खरीद/बिक्री भाव और अलर्ट सीमा भरें।<br><br>सीमा से नीचे जाने पर डैशबोर्ड पर चेतावनी दिखेगी।`;
+
+  /* ---- How-to: रिमाइंडर ---- */
+  if (/(रिमाइंडर|reminder|याद|whatsapp|व्हाट्सएप)/.test(t))
+    return `🔔 <b>रिमाइंडर भेजना:</b><br>1. मेन्यू → <b>रिमाइंडर</b><br>2. ग्राहक पर टैप करें<br>3. <b>💬 WhatsApp रिमाइंडर</b> बटन दबाएँ<br><br>तैयार संदेश के साथ WhatsApp खुल जाएगा।<br>नोट: ग्राहक का मोबाइल नंबर ज़रूरी है।`;
+
+  /* ---- How-to: बैकअप ---- */
+  if (/(बैकअप|backup|सेव|restore|रीस्टोर)/.test(t))
+    return `💾 <b>बैकअप व रीस्टोर:</b><br>मेन्यू → <b>सेटिंग्स</b> → <b>बैकअप व रीस्टोर</b><br>• <b>📤 बैकअप लें</b> — पूरा डेटा फाइल में डाउनलोड<br>• <b>📥 रीस्टोर</b> — पुरानी फाइल से डेटा वापस<br><br>हर हफ्ते बैकअप लेने की सलाह दी जाती है।`;
+
+  /* ---- प्रीमियम ---- */
+  if (/(प्रीमियम|premium|प्लान|plan|₹|सब्सक्रिप्शन|price|कीमत)/.test(t)) {
+    const p = DB.settings.prices;
+    return `⭐ <b>प्रीमियम प्लान:</b><br>• <b>बेसिक</b> — ₹${p.basic}/माह<br>• <b>प्रो</b> — ₹${p.pro}/माह (सबसे लोकप्रिय)<br>• <b>बिज़नेस</b> — ₹${p.business}/माह<br><br><b>फायदे:</b> विज्ञापन हटाएँ, विस्तृत रिपोर्ट, बैकअप, स्टॉक अलर्ट।<br><br>${isPro() ? '✅ आपका ' + planName(CU.plan) + ' प्लान चालू है।' : 'मेन्यू → <b>प्रीमियम</b> से लें।'}`;
+  }
+
+  /* ---- Help ---- */
+  if (/(help|मदद|सहायता|क्या कर|क्या पूछ|feature|सुविधा)/.test(t))
+    return `🤖 <b>मैं इन सवालों के जवाब दे सकता हूँ:</b><br><br><b>डेटा:</b><br>• कुल उधारी / देना कितना है<br>• आज की बिक्री / महीने की बिक्री<br>• इस महीने का खर्च / मुनाफ़ा<br>• स्टॉक वैल्यू / कम स्टॉक<br>• किसी ग्राहक का नाम लिखें<br><br><b>सहायता:</b><br>• ग्राहक कैसे जोड़ें<br>• बिक्री/खर्च कैसे दर्ज करें<br>• रिमाइंडर कैसे भेजें<br>• बैकअप कैसे लें<br>• प्रीमियम प्लान`;
+
+  /* ---- Fallback ---- */
+  return `माफ़ कीजिए, मैं यह सवाल ठीक से समझ नहीं पाया। 😕<br><br>आप ये पूछ सकते हैं:<br>• <b>कुल उधारी?</b><br>• <b>आज की बिक्री?</b><br>• <b>स्टॉक?</b><br>• <b>ग्राहक कैसे जोड़ें?</b><br>• <b>बैकअप?</b>`;
+}
 
 /* =========================================================
    BOOT
